@@ -28,6 +28,7 @@ const ACTIVITY_TYPES = {
 
 // Hook personalizado para manejar los datos del dashboard
 const useDashboardData = () => {
+  const { user } = useAuth();
   const [stats, setStats] = useState({
     totalPersonal: 0,
     personalActivo: 0,
@@ -115,7 +116,13 @@ const useDashboardData = () => {
 
 
 
-      // Ejecutar todas las peticiones en paralelo
+      // Definir promesas base vacías para evitar errores si no se tiene permiso
+      const emptyStats = { data: { data: {} } };
+      const emptyList = { data: [] };
+
+      const { rol: userRole } = user || { rol: "empleado" };
+
+      // Ejecutar peticiones según el rol
       const [
         personalStatsRes,
         tareasStatsRes,
@@ -123,11 +130,20 @@ const useDashboardData = () => {
         personalRecentRes,
         tareasRecentRes
       ] = await Promise.all([
-        getPersonalStatsRequest(),
-        getTareasStatsRequest(),
-        getAlmacenesStatsRequest(),
-        getPersonalRequest({ limit: 5, sort: "-createdAt" }),
-        getTareasRequest({ limit: 5, sort: "-createdAt" })
+        // Personal Stats: Solo Admin
+        userRole === "admin" ? getPersonalStatsRequest() : Promise.resolve(emptyStats),
+        
+        // Tareas Stats: Admin y Empleado
+        ["admin", "empleado"].includes(userRole) ? getTareasStatsRequest() : Promise.resolve(emptyStats),
+        
+        // Almacenes Stats: Admin y Empleado
+        ["admin", "empleado"].includes(userRole) ? getAlmacenesStatsRequest() : Promise.resolve(emptyStats),
+        
+        // Personal Reciente: Solo Admin
+        userRole === "admin" ? getPersonalRequest({ limit: 5, sort: "-createdAt" }) : Promise.resolve(emptyList),
+        
+        // Tareas Recientes: Admin y Empleado
+        ["admin", "empleado"].includes(userRole) ? getTareasRequest({ limit: 5, sort: "-createdAt" }) : Promise.resolve(emptyList)
       ]);
 
       // Procesar Estadísticas de Personal
@@ -277,45 +293,53 @@ const DashboardContent = ({ stats, user, onRefresh }) => {
 
       {/* Grid de estadísticas mejorado */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
-        <StatCard
-          title="Total Personal"
-          value={stats.totalPersonal}
-          subtitle={`${stats.personalActivo} activos`}
-          icon={UsersIcon}
-          color="blue"
-        />
+        {user?.rol === "admin" && (
+          <>
+            <StatCard
+              title="Total Personal"
+              value={stats.totalPersonal}
+              subtitle={`${stats.personalActivo} activos`}
+              icon={UsersIcon}
+              color="blue"
+            />
 
-        <StatCard
-          title="Personal Activo"
-          value={stats.personalActivo}
-          subtitle={`${porcentajeActivos}% del total`}
-          icon={CheckCircleIcon}
-          color="green"
-        />
+            <StatCard
+              title="Personal Activo"
+              value={stats.personalActivo}
+              subtitle={`${porcentajeActivos}% del total`}
+              icon={CheckCircleIcon}
+              color="green"
+            />
+          </>
+        )}
 
-        <StatCard
-          title="Tareas Pendientes"
-          value={stats.tareasPendientes}
-          subtitle="Requieren atención"
-          icon={ClockIcon}
-          color="yellow"
-        />
+        {(user?.rol === "admin" || user?.rol === "empleado") && (
+          <>
+            <StatCard
+              title="Tareas Pendientes"
+              value={stats.tareasPendientes}
+              subtitle="Requieren atención"
+              icon={ClockIcon}
+              color="yellow"
+            />
 
-        <StatCard
-          title="Tareas Completadas"
-          value={stats.tareasCompletadas}
-          subtitle="Finalizadas"
-          icon={DocumentTextIcon}
-          color="purple"
-        />
+            <StatCard
+              title="Tareas Completadas"
+              value={stats.tareasCompletadas}
+              subtitle="Finalizadas"
+              icon={DocumentTextIcon}
+              color="purple"
+            />
 
-        <StatCard
-          title="Almacenes"
-          value={stats.totalAlmacenes}
-          subtitle={`${stats.almacenesOperativos} operativos`}
-          icon={BuildingStorefrontIcon}
-          color="indigo"
-        />
+            <StatCard
+              title="Almacenes"
+              value={stats.totalAlmacenes}
+              subtitle={`${stats.almacenesOperativos} operativos`}
+              icon={BuildingStorefrontIcon}
+              color="indigo"
+            />
+          </>
+        )}
       </div>
 
       {/* Contenido principal en grid */}

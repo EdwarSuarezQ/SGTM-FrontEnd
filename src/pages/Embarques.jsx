@@ -10,6 +10,7 @@ import {
 import { getEmbarcacionesRequest } from "../api/embarcaciones";
 import { getRutasRequest } from "../api/rutas";
 import { getAlmacenesRequest } from "../api/almacenes";
+import { getPersonalRequest } from "../api/personal";
 import { toast } from "react-hot-toast";
 import {
   formatDate,
@@ -90,6 +91,7 @@ function Embarques() {
   const [embarcaciones, setEmbarcaciones] = useState([]);
   const [rutas, setRutas] = useState([]);
   const [almacenes, setAlmacenes] = useState([]);
+  const [personal, setPersonal] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentEmbarque, setCurrentEmbarque] = useState(null);
@@ -120,6 +122,7 @@ function Embarques() {
     embarcacionId: "",
     rutaId: "",
     almacenId: "",
+    supervisorId: "",
     origen: "",
     destino: "",
     fechaSalida: "",
@@ -145,6 +148,7 @@ function Embarques() {
     cargarEmbarcaciones();
     cargarRutas();
     cargarAlmacenes();
+    cargarPersonal();
     cargarStats();
     cargarProximosEmbarques();
   }, []);
@@ -249,6 +253,21 @@ function Embarques() {
       }
     } catch (error) {
       console.error("Error al cargar almacenes:", error);
+    }
+  };
+
+  const cargarPersonal = async () => {
+    try {
+      const res = await getPersonalRequest({ limit: 100 });
+      if (res.data?.success && Array.isArray(res.data.data?.items)) {
+        // Filtrar solo personal activo
+        const personalActivo = res.data.data.items.filter(
+          (p) => p.estado === "activo"
+        );
+        setPersonal(personalActivo);
+      }
+    } catch (error) {
+      console.error("Error al cargar personal:", error);
     }
   };
 
@@ -703,6 +722,7 @@ function Embarques() {
         embarcaciones={embarcaciones}
         rutas={rutas}
         almacenes={almacenes}
+        personal={personal}
       />
     </div>
   );

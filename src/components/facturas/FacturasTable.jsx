@@ -34,15 +34,17 @@ const FacturasTable = ({
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Estado
             </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Acciones
-            </th>
+            {user && user.rol === "admin" && (
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Acciones
+              </th>
+            )}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {loading ? (
             <tr>
-              <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
+              <td colSpan={user && user.rol === "admin" ? "6" : "5"} className="px-6 py-8 text-center text-gray-500">
                 <div className="flex justify-center items-center">
                   <Loader size="md" color="text-blue-500" />
                   <span className="ml-2">Cargando facturas...</span>
@@ -81,29 +83,27 @@ const FacturasTable = ({
                   </span>
                 </td>
 
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  {user && user.rol === "admin" && (
-                    <>
-                      <button
-                        onClick={() => handleEdit(factura)}
-                        className="text-blue-600 hover:text-blue-800 mr-3"
-                      >
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      <button
-                        onClick={() => handleDelete(factura._id)}
-                        className="text-red-600 hover:text-red-800"
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </>
-                  )}
-                </td>
+                {user && user.rol === "admin" && (
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button
+                      onClick={() => handleEdit(factura)}
+                      className="text-blue-600 hover:text-blue-800 mr-3"
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDelete(factura._id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </td>
+                )}
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="px-6 py-8 text-center text-gray-500">
+              <td colSpan={user && user.rol === "admin" ? "6" : "5"} className="px-6 py-8 text-center text-gray-500">
                 <div className="flex flex-col items-center justify-center">
                   <i className="fas fa-file-invoice text-4xl text-gray-300 mb-2"></i>
                   <p className="text-lg font-medium">

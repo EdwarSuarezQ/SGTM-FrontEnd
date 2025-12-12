@@ -179,7 +179,11 @@ function Profile() {
                     : "bg-green-100 text-green-800"
                 }`}
               >
-                {user?.rol === "admin" ? "Administrador" : "Empleado"}
+                {user?.rol === "admin" 
+                  ? "Administrador" 
+                  : user?.rol === "cliente" 
+                    ? "Cliente" 
+                    : "Empleado"}
               </span>
             </div>
           </div>

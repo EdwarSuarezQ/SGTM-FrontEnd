@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import {
   ChartBarIcon,
   UsersIcon,
@@ -43,6 +44,9 @@ const QuickAction = ({ title, description, icon: Icon, to, color }) => {
 
 // Componente para las acciones rápidas
 const QuickActions = () => {
+  const { user } = useAuth();
+  const userRole = user?.rol || "empleado";
+
   const actions = [
     {
       title: "Gestionar Tareas",
@@ -50,6 +54,7 @@ const QuickActions = () => {
       icon: DocumentTextIcon,
       to: "/tareas",
       color: "blue",
+      allowedRoles: ["admin", "empleado"],
     },
     {
       title: "Gestionar Personal",
@@ -57,6 +62,7 @@ const QuickActions = () => {
       icon: UsersIcon,
       to: "/personal",
       color: "green",
+      allowedRoles: ["admin"],
     },
     {
       title: "Gestionar Embarques",
@@ -64,6 +70,7 @@ const QuickActions = () => {
       icon: TruckIcon,
       to: "/embarques",
       color: "purple",
+      allowedRoles: ["admin", "empleado", "cliente"],
     },
     {
       title: "Ver Rutas",
@@ -71,6 +78,7 @@ const QuickActions = () => {
       icon: MapIcon,
       to: "/rutas",
       color: "yellow",
+      allowedRoles: ["admin", "empleado"],
     },
     {
       title: "Almacenes",
@@ -78,6 +86,7 @@ const QuickActions = () => {
       icon: BuildingStorefrontIcon,
       to: "/almacen",
       color: "indigo",
+      allowedRoles: ["admin", "empleado"],
     },
     {
       title: "Estadísticas",
@@ -85,12 +94,17 @@ const QuickActions = () => {
       icon: ChartBarIcon,
       to: "/estadisticas",
       color: "red",
+      allowedRoles: ["admin"],
     },
   ];
 
+  const filteredActions = actions.filter((action) =>
+    action.allowedRoles.includes(userRole)
+  );
+
   return (
     <div className="space-y-2">
-      {actions.map((action, index) => (
+      {filteredActions.map((action, index) => (
         <QuickAction key={index} {...action} />
       ))}
     </div>
