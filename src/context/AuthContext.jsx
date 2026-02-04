@@ -24,7 +24,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const checkLogin = async () => {
-      const cookies = Cookies.get() || {};
 
       // Intentar verificar sesión siempre (puede haber cookie HttpOnly o cookie visible)
       try {
