@@ -51,8 +51,9 @@ export function AuthProvider({ children }) {
     try {
       const res = await loginRequest(credentials);
       
-      // Guardar token en cookie (12h) con path '/'
+      // Guardar token en localStorage
       if (res.data && res.data.token) {
+        localStorage.setItem("token", res.data.token);
         Cookies.set("token", res.data.token, { expires: 0.5, path: '/' });
       }
 
@@ -75,6 +76,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     logoutRequest();
     Cookies.remove("token");
+    localStorage.removeItem("token");
     setIsAuthenticated(false);
     setUser(null);
   };

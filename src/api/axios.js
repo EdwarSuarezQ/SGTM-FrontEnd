@@ -6,6 +6,15 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+// Interceptor para añadir el token a las cabeceras
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Interceptor para manejar errores
 instance.interceptors.response.use(
   (response) => response,
