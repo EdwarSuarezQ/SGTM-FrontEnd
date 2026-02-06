@@ -151,5 +151,6 @@ frontEnd/
 | "Unexpected token '<'" | Problema de CORS, verifica configuración del backend |
 | Estilos no cargan | `rm -rf node_modules/.vite && npm run dev` |
 
+--------------------------------
 
 [Ver](http://sgtm-front-end.vercel.app/)
