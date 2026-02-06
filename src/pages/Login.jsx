@@ -70,15 +70,15 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#e9f5ff]">
-      <div className="bg-white w-full max-w-lg px-10 py-12 rounded-2xl shadow-lg shadow-blue-100 border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center bg-[#e9f5ff] p-4">
+      <div className="bg-white w-full max-w-md px-6 py-10 sm:px-10 sm:py-12 rounded-2xl shadow-lg shadow-blue-100 border border-gray-200">
         {/* Icono */}
         <div className="flex justify-center mb-4">
-          <i className="fas fa-ship text-blue-600 text-4xl"></i>
+          <i className="fas fa-ship text-blue-600 text-3xl sm:text-4xl"></i>
         </div>
 
         {/* Títulos */}
-        <h2 className="text-center text-2xl font-bold text-gray-900">
+        <h2 className="text-center text-xl sm:text-2xl font-bold text-gray-900">
           Iniciar Sesión
         </h2>
         <p className="text-center text-sm text-gray-600 mb-8">
@@ -123,8 +123,9 @@ function Login() {
               {/* Botón ojo */}
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
+                onClick={togglePasswordVisibility}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-blue-600 transition-colors"
+                title={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
               >
                 {showPassword ? (
                   <EyeSlashIcon className="h-5 w-5" />
