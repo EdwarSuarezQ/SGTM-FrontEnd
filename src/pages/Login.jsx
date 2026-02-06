@@ -103,6 +103,7 @@ function Login() {
               value={formData.email}
               onChange={handleChange}
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg"
+              autoComplete="email"
             />
           </div>
 
@@ -118,6 +119,7 @@ function Login() {
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg"
+                autoComplete="current-password"
               />
 
               {/* Botón ojo */}

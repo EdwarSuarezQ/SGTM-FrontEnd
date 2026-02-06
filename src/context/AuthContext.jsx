@@ -24,6 +24,14 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const checkLogin = async () => {
+      const token = localStorage.getItem("token") || Cookies.get("token");
+
+      if (!token) {
+        setIsAuthenticated(false);
+        setLoading(false);
+        setUser(null);
+        return;
+      }
 
       // Intentar verificar sesión siempre (puede haber cookie HttpOnly o cookie visible)
       try {
