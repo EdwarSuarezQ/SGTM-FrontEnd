@@ -36,9 +36,10 @@ export default function Navbar({ onToggleSidebar, onToggleCollapse }) {
       </div>
 
       <div className="flex-1 flex items-center justify-between ml-4">
-        <h1 className="text-xl font-bold flex items-center">
-          <i className="fas fa-ship w-6 h-6 mr-2"></i>
-          SGTM Buenaventura
+        <h1 className="text-lg sm:text-xl font-bold flex items-center truncate">
+          <i className="fas fa-ship w-5 h-5 sm:w-6 sm:h-6 mr-2 flex-shrink-0"></i>
+          <span className="truncate">SGTM {/* Buenaventura oculto en móviles muy pequeños si es necesario, pero truncate ayuda */}</span>
+          <span className="hidden sm:inline ml-1 text-blue-200">Buenaventura</span>
         </h1>
 
         <div className="flex items-center space-x-4">
