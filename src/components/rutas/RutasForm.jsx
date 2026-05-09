@@ -20,17 +20,13 @@ const RutasForm = ({
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   
-  const paises = Country.getAllCountries();
-
-  // Reset validation when modal closes
+  const paises = Country.getAllCountries();
   useEffect(() => {
     if (!modalIsOpen) {
       setErrors({});
       setTouched({});
     }
-  }, [modalIsOpen, currentRuta]);
-
-  // Inicializar estados y ciudades cuando se carga una ruta para editar o cuando cambian los países
+  }, [modalIsOpen, currentRuta]);
   useEffect(() => {
     if (formData.paisOrigen) {
       const states = State.getStatesOfCountry(formData.paisOrigen);
@@ -136,18 +132,12 @@ const RutasForm = ({
 
   const handlePaisOrigenChange = (e) => {
     const paisCode = e.target.value;
-    handleInputChange(e);
-    
-    // Cargar estados del país seleccionado
+    handleInputChange(e);
     const states = State.getStatesOfCountry(paisCode);
-    setEstadosOrigen(states);
-    
-    // Limpiar estado y ciudad si cambió el país
+    setEstadosOrigen(states);
     handleInputChange({ target: { name: "estadoOrigen", value: "" } });
     handleInputChange({ target: { name: "origen", value: "" } });
-    setCiudadesOrigen([]);
-    
-    // Validate
+    setCiudadesOrigen([]);
     const { name, value } = e.target;
     if (touched[name]) {
       const error = validateField(name, value);
@@ -157,16 +147,10 @@ const RutasForm = ({
 
   const handleEstadoOrigenChange = (e) => {
     const estadoCode = e.target.value;
-    handleInputChange(e);
-    
-    // Cargar ciudades del estado seleccionado
+    handleInputChange(e);
     const cities = City.getCitiesOfState(formData.paisOrigen, estadoCode);
-    setCiudadesOrigen(cities);
-    
-    // Limpiar ciudad si cambió el estado
-    handleInputChange({ target: { name: "origen", value: "" } });
-    
-    // Validate
+    setCiudadesOrigen(cities);
+    handleInputChange({ target: { name: "origen", value: "" } });
     const { name, value } = e.target;
     if (touched[name]) {
       const error = validateField(name, value);
@@ -176,18 +160,12 @@ const RutasForm = ({
 
   const handlePaisDestinoChange = (e) => {
     const paisCode = e.target.value;
-    handleInputChange(e);
-    
-    // Cargar estados del país seleccionado
+    handleInputChange(e);
     const states = State.getStatesOfCountry(paisCode);
-    setEstadosDestino(states);
-    
-    // Limpiar estado y ciudad si cambió el país
+    setEstadosDestino(states);
     handleInputChange({ target: { name: "estadoDestino", value: "" } });
     handleInputChange({ target: { name: "destino", value: "" } });
-    setCiudadesDestino([]);
-    
-    // Validate
+    setCiudadesDestino([]);
     const { name, value } = e.target;
     if (touched[name]) {
       const error = validateField(name, value);
@@ -197,16 +175,10 @@ const RutasForm = ({
 
   const handleEstadoDestinoChange = (e) => {
     const estadoCode = e.target.value;
-    handleInputChange(e);
-    
-    // Cargar ciudades del estado seleccionado
+    handleInputChange(e);
     const cities = City.getCitiesOfState(formData.paisDestino, estadoCode);
-    setCiudadesDestino(cities);
-    
-    // Limpiar ciudad si cambió el estado
-    handleInputChange({ target: { name: "destino", value: "" } });
-    
-    // Validate
+    setCiudadesDestino(cities);
+    handleInputChange({ target: { name: "destino", value: "" } });
     const { name, value } = e.target;
     if (touched[name]) {
       const error = validateField(name, value);
@@ -290,7 +262,7 @@ const RutasForm = ({
               </div>
             </div>
 
-            {/* Sección de Origen */}
+            {}
             <div className="border-t pt-3">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -383,7 +355,7 @@ const RutasForm = ({
               </div>
             </div>
 
-            {/* Sección de Destino */}
+            {}
             <div className="border-t pt-3">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -473,7 +445,7 @@ const RutasForm = ({
               </div>
             </div>
 
-            {/* Información adicional */}
+            {}
             <div className="border-t pt-3">
               <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
                 <i className="fas fa-info-circle mr-2 text-gray-600"></i>
@@ -524,7 +496,7 @@ const RutasForm = ({
               </div>
             </div>
 
-            {/* Tipo y Estado */}
+            {}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">

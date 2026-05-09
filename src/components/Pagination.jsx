@@ -1,16 +1,5 @@
 import React from "react";
 
-/**
- * Componente de paginación reutilizable
- * Estilo basado en AdminUsersPage (layout organizado)
- *
- * @param {number} currentPage - Página actual (1-indexed)
- * @param {number} totalPages - Total de páginas disponibles
- * @param {number} totalItems - Total de elementos en todas las páginas
- * @param {number} itemsPerPage - Elementos mostrados por página
- * @param {function} onPageChange - Callback cuando cambia la página
- * @param {function} onItemsPerPageChange - Callback cuando cambia elementos por página
- */
 const Pagination = ({
   currentPage = 1,
   totalPages = 1,
@@ -18,17 +7,12 @@ const Pagination = ({
   itemsPerPage = 10,
   onPageChange,
   onItemsPerPageChange,
-}) => {
-  // No mostrar paginación si no hay elementos
+}) => {
   if (totalItems === 0) {
     return null;
-  }
-
-  // Calcular rango de elementos mostrados
+  }
   const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
-
-  // Generar array de números de página para mostrar (Lógica de ventana deslizante)
+  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 5;
@@ -56,7 +40,7 @@ const Pagination = ({
 
   return (
     <div className="border-t border-gray-200 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-      {/* Izquierda: Selector de items por página */}
+      {}
       <div className="flex items-center gap-2">
         <label className="text-gray-700 text-sm">Mostrando:</label>
         <select
@@ -75,10 +59,10 @@ const Pagination = ({
         <span className="text-gray-700 text-sm">registros por página</span>
       </div>
 
-      {/* Centro: Navegación */}
+      {}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-1">
-          {/* Primera Página */}
+          {}
           <button
             onClick={() => onPageChange(1)}
             disabled={currentPage === 1}
@@ -88,7 +72,7 @@ const Pagination = ({
             «
           </button>
           
-          {/* Página Anterior */}
+          {}
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
@@ -98,7 +82,7 @@ const Pagination = ({
             ‹
           </button>
 
-          {/* Números de Página */}
+          {}
           {pageNumbers.map((page) => (
             <button
               key={page}
@@ -113,7 +97,7 @@ const Pagination = ({
             </button>
           ))}
 
-          {/* Página Siguiente */}
+          {}
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
@@ -123,7 +107,7 @@ const Pagination = ({
             ›
           </button>
 
-          {/* Última Página */}
+          {}
           <button
             onClick={() => onPageChange(totalPages)}
             disabled={currentPage === totalPages}
@@ -135,7 +119,7 @@ const Pagination = ({
         </div>
       )}
 
-      {/* Derecha: Información de registros */}
+      {}
       <div className="text-gray-700 text-sm text-center md:text-right">
         Mostrando <span className="font-medium">{startItem}</span> - <span className="font-medium">{endItem}</span> de <span className="font-medium">{totalItems}</span> registros
       </div>

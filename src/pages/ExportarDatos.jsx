@@ -15,9 +15,7 @@ function ExportarDatos() {
     fechaInicio: "",
     fechaFin: "",
     estado: "",
-  });
-
-  // Opciones de recursos para exportar
+  });
   const opcionesRecursos = [
     { value: "tareas", label: "Tareas", icon: "fas fa-tasks", color: "blue" },
     {
@@ -51,9 +49,7 @@ function ExportarDatos() {
       icon: "fas fa-file-invoice-dollar",
       color: "red",
     },
-  ];
-
-  // Opciones de formato
+  ];
   const opcionesFormato = [
     { value: "json", label: "JSON", icon: "fas fa-code" },
     { value: "csv", label: "CSV", icon: "fas fa-table" },
@@ -78,8 +74,7 @@ function ExportarDatos() {
     try {
       const res = await exportDataRequest(recursoSeleccionado);
 
-      if (res.data && res.data.success) {
-        // Crear y descargar el archivo
+      if (res.data && res.data.success) {
         await descargarArchivo(res.data, recursoSeleccionado, formato);
         toast.success(`Datos de ${getRecursoLabel()} exportados correctamente`);
       } else {
@@ -107,17 +102,14 @@ function ExportarDatos() {
         tipoMime = "text/csv";
         extension = "csv";
         break;
-      case "excel":
-        // Usar ExcelJS para crear un archivo Excel real
+      case "excel":
         await exportarAExcel(data.data, recurso);
-        return; // Salir temprano ya que exportarAExcel maneja la descarga
+        return; 
       default:
         contenido = JSON.stringify(data, null, 2);
         tipoMime = "application/json";
         extension = "json";
-    }
-
-    // Agregar BOM para que Excel reconozca correctamente los caracteres especiales (tildes, ñ, etc.)
+    }
     const bom = "\uFEFF";
     const blob = new Blob([bom + contenido], { type: tipoMime });
     const url = window.URL.createObjectURL(blob);
@@ -142,17 +134,13 @@ function ExportarDatos() {
 
     const config = exportConfig[recurso];
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet(getRecursoLabel());
-
-    // Configurar columnas
+    const worksheet = workbook.addWorksheet(getRecursoLabel());
     if (config) {
       worksheet.columns = config.headers.map((h) => ({
         header: h.label,
         key: h.key,
         width: 20,
-      }));
-
-      // Agregar datos con formateo
+      }));
       datos.forEach((fila) => {
         const filaFormateada = {};
         config.headers.forEach((header) => {
@@ -164,8 +152,7 @@ function ExportarDatos() {
         });
         worksheet.addRow(filaFormateada);
       });
-    } else {
-      // Fallback si no hay configuración
+    } else {
       const headers = Object.keys(datos[0]);
       worksheet.columns = headers.map((h) => ({
         header: h,
@@ -173,18 +160,14 @@ function ExportarDatos() {
         width: 20,
       }));
       datos.forEach((fila) => worksheet.addRow(fila));
-    }
-
-    // Estilizar encabezados
+    }
     worksheet.getRow(1).font = { bold: true };
     worksheet.getRow(1).fill = {
       type: "pattern",
       pattern: "solid",
       fgColor: { argb: "FF4472C4" },
     };
-    worksheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
-
-    // Agregar bordes a todas las celdas
+    worksheet.getRow(1).font = { bold: true, color: { argb: "FFFFFFFF" } };
     worksheet.eachRow((row, rowNumber) => {
       row.eachCell((cell) => {
         cell.border = {
@@ -194,9 +177,7 @@ function ExportarDatos() {
           right: { style: "thin" },
         };
       });
-    });
-
-    // Generar archivo y descargar
+    });
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -225,8 +206,7 @@ function ExportarDatos() {
     if (config) {
       cabecerasKeys = config.headers.map((h) => h.key);
       cabecerasLabels = config.headers.map((h) => h.label);
-    } else {
-      // Fallback si no hay configuración
+    } else {
       cabecerasKeys = Object.keys(datos[0]);
       cabecerasLabels = cabecerasKeys;
     }
@@ -234,19 +214,13 @@ function ExportarDatos() {
     const filas = datos.map((fila) =>
       cabecerasKeys
         .map((key, index) => {
-          let valor = fila[key];
-
-          // Aplicar formateador si existe
+          let valor = fila[key];
           if (config && config.headers[index].formatter) {
             valor = config.headers[index].formatter(valor);
-          }
-
-          // Manejar valores nulos o undefined
+          }
           if (valor === null || valor === undefined) {
             valor = "";
-          }
-
-          // Escapar punto y coma y comillas para CSV
+          }
           const stringValue = String(valor);
           if (stringValue.includes(";") || stringValue.includes('"')) {
             return `"${stringValue.replace(/"/g, '""')}"`;
@@ -290,10 +264,10 @@ function ExportarDatos() {
         Exporta información del sistema en diferentes formatos
       </p>
 
-      {/* Tarjeta Principal de Exportación */}
+      {}
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Selección de Recurso */}
+          {}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <i className="fas fa-database mr-2"></i>
@@ -312,7 +286,7 @@ function ExportarDatos() {
             </select>
           </div>
 
-          {/* Selección de Formato */}
+          {}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <i className="fas fa-file-export mr-2"></i>
@@ -332,7 +306,7 @@ function ExportarDatos() {
           </div>
         </div>
 
-        {/* Información del Recurso Seleccionado */}
+        {}
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <div className="flex items-center">
             <div className={`p-3 bg-${recursoInfo.color}-100 rounded-lg mr-4`}>
@@ -352,7 +326,7 @@ function ExportarDatos() {
           </div>
         </div>
 
-        {/* Filtros Avanzados (Opcionales) */}
+        {}
         <div className="mt-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-800">
@@ -407,7 +381,7 @@ function ExportarDatos() {
           </div>
         </div>
 
-        {/* Botón de Exportación */}
+        {}
         <div className="mt-8 flex justify-center">
           <button
             onClick={handleExportar}
@@ -433,8 +407,7 @@ function ExportarDatos() {
         </div>
       </div>
 
-      
-      {/* Recursos Disponibles */}
+      {}
       <div className="bg-white rounded-lg shadow-md p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Recursos Disponibles para Exportar

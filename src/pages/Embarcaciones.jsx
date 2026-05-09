@@ -8,9 +8,7 @@ import {
   getEmbarcacionesStatsRequest,
 } from "../api/embarcaciones";
 import { toast } from "react-hot-toast";
-import { formatDate, getColorEstado, getTextoEstado } from "../utils/helpers";
-
-// Importar componentes
+import { formatDate, getColorEstado, getTextoEstado } from "../utils/helpers";
 import EmbarcacionesStats from "../components/embarcaciones/EmbarcacionesStats";
 import EmbarcacionesFilter from "../components/embarcaciones/EmbarcacionesFilter";
 import EmbarcacionesTable from "../components/embarcaciones/EmbarcacionesTable";
@@ -22,9 +20,7 @@ function Embarcaciones() {
   const [embarcaciones, setEmbarcaciones] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentEmbarcacion, setCurrentEmbarcacion] = useState(null);
-  
-  // Estados de filtros y paginación
+  const [currentEmbarcacion, setCurrentEmbarcacion] = useState(null);
   const [filtros, setFiltros] = useState({
     estado: "",
     tipo: "",
@@ -42,32 +38,25 @@ function Embarcaciones() {
     capacidad: "",
     tipo: "contenedor",
     estado: "pendiente",
-  });
-
-  // Estado para las estadísticas
+  });
   const [estadisticas, setEstadisticas] = useState({
     activas: 0,
     enPuerto: 0,
     total: 0,
     variacionTotal: 0,
     variacionActivas: 0,
-    variacionPuerto: 0,
-    // Desglose por estado
+    variacionPuerto: 0,
     enTransito: 0,
     enRuta: 0,
     pendientes: 0
   });
-  const [proximosArribosGlobal, setProximosArribosGlobal] = useState([]);
-
-  // Cargar embarcaciones cuando cambian los filtros o la página
+  const [proximosArribosGlobal, setProximosArribosGlobal] = useState([]);
   useEffect(() => {
     const timer = setTimeout(() => {
       cargarEmbarcaciones();
     }, 300);
     return () => clearTimeout(timer);
-  }, [currentPage, itemsPerPage, filtros]);
-
-  // Cargar estadísticas al montar
+  }, [currentPage, itemsPerPage, filtros]);
   useEffect(() => {
     cargarStats();
     cargarProximosArribos();
@@ -80,9 +69,7 @@ function Embarcaciones() {
         const data = res.data.data;
         const activas = (data.enTransito || 0) + (data.enRuta || 0);
         const enPuerto = data.enPuerto || 0;
-        const total = data.total || 0;
-
-        // Simulamos variaciones (o las dejamos en 0)
+        const total = data.total || 0;
         const variacionTotal = total > 0 ? Math.round((total / Math.max(total - 2, 1) - 1) * 100) : 0;
         const variacionActivas = activas > 0 ? Math.round((activas / Math.max(activas - 1, 1) - 1) * 100) : 0;
         const variacionPuerto = enPuerto > 0 ? Math.round((enPuerto / Math.max(enPuerto - 1, 1) - 1) * 100) : 0;
@@ -105,13 +92,12 @@ function Embarcaciones() {
   };
 
   const cargarProximosArribos = async () => {
-    try {
-      // Buscamos embarcaciones en ruta o en tránsito, ordenadas por fecha (ascendente)
+    try {
       const params = {
         page: 1,
         limit: 4,
         sort: "fecha",
-        estado: "en-ruta" // Priorizamos en-ruta, o podríamos pedir sin filtro de estado y ordenar
+        estado: "en-ruta" 
       };
       
       const res = await getEmbarcacionesRequest(params);
@@ -164,11 +150,7 @@ function Embarcaciones() {
   const handleItemsPerPageChange = (limit) => {
     setItemsPerPage(limit);
     setCurrentPage(1);
-  };
-
-
-
-  // Función para calcular estadísticas por estado
+  };
   const calcularEstadisticasEstado = () => {
     const estados = {
       "en-transito": {
@@ -199,9 +181,7 @@ function Embarcaciones() {
       ...estado,
       porcentaje: total > 0 ? (estado.cantidad / total) * 100 : 0,
     }));
-  };
-
-  // Función para obtener próximos arribos
+  };
   const obtenerProximosArribos = (embarcaciones) => {
     return embarcaciones
       .filter((e) => e.estado === "en-transito" || e.estado === "en-ruta")
@@ -273,9 +253,7 @@ function Embarcaciones() {
         toast.success("Embarcación creada correctamente");
       }
 
-      setModalIsOpen(false);
-      
-      // Actualizar todo en paralelo
+      setModalIsOpen(false);
       await Promise.all([
         cargarEmbarcaciones(),
         cargarStats(),
@@ -297,8 +275,7 @@ function Embarcaciones() {
     let fechaFormateada = "";
     if (embarcacion.fecha) {
       try {
-        const dateObj = new Date(embarcacion.fecha);
-        // Asegurarse de que la fecha sea válida antes de formatear
+        const dateObj = new Date(embarcacion.fecha);
         if (!isNaN(dateObj.getTime())) {
           fechaFormateada = dateObj.toISOString().split("T")[0];
         }
@@ -322,9 +299,7 @@ function Embarcaciones() {
     if (window.confirm("¿Estás seguro de eliminar esta embarcación?")) {
       try {
         await deleteEmbarcacionRequest(id);
-        toast.success("Embarcación eliminada correctamente");
-        
-        // Actualizar todo en paralelo
+        toast.success("Embarcación eliminada correctamente");
         await Promise.all([
           cargarEmbarcaciones(),
           cargarStats(),
@@ -383,13 +358,13 @@ function Embarcaciones() {
 
         <EmbarcacionesTable
           loading={loading}
-          embarcacionesFiltradas={embarcaciones} // Pasamos las embarcaciones directamente
+          embarcacionesFiltradas={embarcaciones} 
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           user={user}
         />
 
-        {/* Paginación */}
+        {}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

@@ -8,16 +8,12 @@ import {
   getAlmacenesStatsRequest,
 } from "../api/almacenes";
 import { toast } from "react-hot-toast";
-import { getColorEstadoAlmacen, getTextoEstadoAlmacen } from "../utils/helpers";
-
-// Importar componentes
+import { getColorEstadoAlmacen, getTextoEstadoAlmacen } from "../utils/helpers";
 import AlmacenesStats from "../components/almacenes/AlmacenesStats";
 import AlmacenesFilter from "../components/almacenes/AlmacenesFilter";
 import AlmacenesTable from "../components/almacenes/AlmacenesTable";
 import AlmacenesForm from "../components/almacenes/AlmacenesForm";
-import Pagination from "../components/Pagination";
-
-// Función para calcular estadísticas
+import Pagination from "../components/Pagination";
 const calcularEstadisticas = (almacenes) => {
   const operativos = almacenes.filter((a) => a.estado === "operativo").length;
   const enMantenimiento = almacenes.filter(
@@ -36,9 +32,7 @@ const calcularEstadisticas = (almacenes) => {
     total > 0
       ? almacenes.reduce((sum, almacen) => sum + (almacen.ocupacion || 0), 0) /
         total
-      : 0;
-
-  // Simular variaciones (en una app real vendrían del backend)
+      : 0;
   const variacionTotal = total > 0 ? Math.round(Math.random() * 20 - 10) : 0;
   const variacionOperativos =
     operativos > 0 ? Math.round(Math.random() * 20 - 10) : 0;
@@ -56,9 +50,7 @@ const calcularEstadisticas = (almacenes) => {
     variacionOperativos,
     variacionCapacidad,
   };
-};
-
-// Función para calcular estadísticas por estado
+};
 const calcularEstadisticasEstado = (almacenes) => {
   const estados = {
     operativo: {
@@ -84,9 +76,7 @@ const calcularEstadisticasEstado = (almacenes) => {
     ...estado,
     porcentaje: total > 0 ? (estado.cantidad / total) * 100 : 0,
   }));
-};
-
-// Función para obtener próximos mantenimientos
+};
 const obtenerProximosMantenimientos = (almacenes) => {
   return almacenes
     .filter((a) => a.proximoMantenimiento && a.estado !== "inoperativo")
@@ -103,9 +93,7 @@ function Almacenes() {
   const [almacenes, setAlmacenes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentAlmacen, setCurrentAlmacen] = useState(null);
-  
-  // Estados de filtros y paginación
+  const [currentAlmacen, setCurrentAlmacen] = useState(null);
   const [filtros, setFiltros] = useState({
     estado: "",
     search: "",
@@ -122,9 +110,7 @@ function Almacenes() {
     ocupacion: "",
     estado: "operativo",
     proximoMantenimiento: "",
-  });
-
-  // Estado para las estadísticas
+  });
   const [estadisticas, setEstadisticas] = useState({
     operativos: 0,
     enMantenimiento: 0,
@@ -136,17 +122,13 @@ function Almacenes() {
     variacionOperativos: 0,
     variacionCapacidad: 0,
   });
-  const [proximosMantenimientosGlobal, setProximosMantenimientosGlobal] = useState([]);
-
-  // Cargar almacenes cuando cambian los filtros o la página
+  const [proximosMantenimientosGlobal, setProximosMantenimientosGlobal] = useState([]);
   useEffect(() => {
     const timer = setTimeout(() => {
       cargarAlmacenes();
     }, 300);
     return () => clearTimeout(timer);
-  }, [currentPage, itemsPerPage, filtros]);
-
-  // Cargar estadísticas al montar
+  }, [currentPage, itemsPerPage, filtros]);
   useEffect(() => {
     cargarStats();
     cargarProximosMantenimientos();
@@ -156,8 +138,7 @@ function Almacenes() {
     try {
       const res = await getAlmacenesStatsRequest();
       if (res.data && res.data.success) {
-        const data = res.data.data;
-        // Simulamos variaciones
+        const data = res.data.data;
         const variacionTotal = data.total > 0 ? Math.round(Math.random() * 20 - 10) : 0;
         const variacionOperativos = data.operativos > 0 ? Math.round(Math.random() * 20 - 10) : 0;
         const variacionCapacidad = data.capacidadTotal > 0 ? Math.round(Math.random() * 15 - 5) : 0;
@@ -177,18 +158,11 @@ function Almacenes() {
   };
 
   const cargarProximosMantenimientos = async () => {
-    try {
-      // Buscamos almacenes ordenados por fecha de mantenimiento (si existiera campo fecha real)
-      // Como proximoMantenimiento es string DD/MM/YYYY, el sort del backend no funcionará bien si no es ISO.
-      // Asumiremos que el backend devuelve ordenado por createdAt por defecto o intentaremos ordenar en cliente si son pocos.
-      // Pero la idea es usar backend.
-      // Si el campo es string, el sort no será cronológico correcto.
-      // Para cumplir el requerimiento de "global", pediremos los primeros sin filtro de estado (o solo no inoperativos).
-      // Y ordenaremos por createdAt como proxy o aceptaremos el orden del backend.
+    try {
       const params = {
         page: 1,
         limit: 4,
-        sort: "-createdAt" // Proxy, ya que fecha es string
+        sort: "-createdAt" 
       };
       
       const res = await getAlmacenesRequest(params);
@@ -240,11 +214,7 @@ function Almacenes() {
   const handleItemsPerPageChange = (limit) => {
     setItemsPerPage(limit);
     setCurrentPage(1);
-  };
-
-  // Calcular estadísticas que dependen de los filtros (basadas en la página actual)
-  // Pero para "Almacenes por Estado" queremos global.
-  // Vamos a usar los datos globales de 'estadisticas' para los porcentajes.
+  };
   
   const estadisticasEstado = [
     {
@@ -277,8 +247,6 @@ function Almacenes() {
     }));
   };
 
-
-
   const handleFiltroChange = (e) => {
     const { name, value } = e.target;
     setFiltros((prev) => ({
@@ -286,9 +254,7 @@ function Almacenes() {
       [name]: value,
     }));
     setCurrentPage(1);
-  };
-
-  // Convertir fecha de DD/MM/YYYY a YYYY-MM-DD para el input date
+  };
   const formatDateForInput = (dateString) => {
     if (!dateString) return "";
     try {
@@ -308,18 +274,14 @@ function Almacenes() {
         `Los siguientes campos son obligatorios: ${missingFields.join(", ")}`
       );
       return false;
-    }
-
-    // Validar capacidad
+    }
     if (
       formData.capacidad &&
       (isNaN(formData.capacidad) || parseInt(formData.capacidad) <= 0)
     ) {
       toast.error("La capacidad debe ser un número mayor a 0");
       return false;
-    }
-
-    // Validar ocupación
+    }
     if (
       formData.ocupacion &&
       (isNaN(formData.ocupacion) ||
@@ -340,8 +302,7 @@ function Almacenes() {
       return;
     }
 
-    try {
-      // Preparar los datos para enviar
+    try {
       const almacenData = {
         nombre: formData.nombre?.trim(),
         ubicacion: formData.ubicacion?.trim(),
@@ -360,9 +321,7 @@ function Almacenes() {
       }
 
       setModalIsOpen(false);
-      setModalIsOpen(false);
-      
-      // Actualizar todo en paralelo
+      setModalIsOpen(false);
       await Promise.all([
         cargarAlmacenes(),
         cargarStats(),
@@ -407,9 +366,7 @@ function Almacenes() {
     if (window.confirm("¿Estás seguro de eliminar este almacén?")) {
       try {
         await deleteAlmacenRequest(id);
-        toast.success("Almacén eliminado correctamente");
-        
-        // Actualizar todo en paralelo
+        toast.success("Almacén eliminado correctamente");
         await Promise.all([
           cargarAlmacenes(),
           cargarStats(),
@@ -437,9 +394,7 @@ function Almacenes() {
   const abrirModalCrear = () => {
     resetForm();
     setModalIsOpen(true);
-  };
-
-  // Función para manejar el clic en "Ver todos" (placeholder)
+  };
   const handleVerTodos = () => {
     toast.success('Funcionalidad "Ver todos" en desarrollo');
   };
@@ -469,13 +424,13 @@ function Almacenes() {
 
         <AlmacenesTable
           loading={loading}
-          almacenesFiltrados={almacenes} // Pasamos los almacenes directamente
+          almacenesFiltrados={almacenes} 
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           user={user}
         />
 
-        {/* Paginación */}
+        {}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -486,7 +441,7 @@ function Almacenes() {
         />
       </div>
 
-      {/* Paneles inferiores */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">

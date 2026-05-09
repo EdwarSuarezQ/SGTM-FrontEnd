@@ -1,4 +1,4 @@
-// src/api/personal.js
+
 import axios from "./axios";
 
 export const getPersonalRequest = (params = {}) =>

@@ -1,4 +1,4 @@
-// src/api/rutas.js
+
 import axios from "./axios";
 
 export const getRutasRequest = (params = {}) => {

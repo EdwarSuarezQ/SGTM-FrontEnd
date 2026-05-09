@@ -1,7 +1,6 @@
 import React from 'react';
 
-const Loader = ({ size = "md", color = "text-gray-600", className = "" }) => {
-  // Map sizes to pixel values for the container
+const Loader = ({ size = "md", color = "text-gray-600", className = "" }) => {
   const sizeMap = {
     sm: "w-5 h-5",
     md: "w-8 h-8",
@@ -9,9 +8,7 @@ const Loader = ({ size = "md", color = "text-gray-600", className = "" }) => {
     xl: "w-16 h-16"
   };
 
-  const currentSize = sizeMap[size] || sizeMap.md;
-
-  // Generate 12 dots for a smooth circle
+  const currentSize = sizeMap[size] || sizeMap.md;
   const dots = Array.from({ length: 12 });
 
   return (

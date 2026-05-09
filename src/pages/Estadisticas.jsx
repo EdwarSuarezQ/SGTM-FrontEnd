@@ -7,9 +7,7 @@ function Estadisticas() {
   const { user } = useAuth();
   const [estadisticas, setEstadisticas] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [periodo, setPeriodo] = useState("mes");
-
-  // Cargar estadísticas al montar el componente
+  const [periodo, setPeriodo] = useState("mes");
   useEffect(() => {
     cargarEstadisticas();
   }, []);
@@ -30,23 +28,17 @@ function Estadisticas() {
     } finally {
       setLoading(false);
     }
-  };
-
-  // Función para calcular porcentajes
+  };
   const calcularPorcentaje = (parcial, total) => {
     if (total === 0) return 0;
     return Math.round((parcial / total) * 100);
-  };
-
-  // Función para obtener color según el porcentaje
+  };
   const getColorPorcentaje = (porcentaje) => {
     if (porcentaje >= 80) return "text-green-600";
     if (porcentaje >= 60) return "text-blue-600";
     if (porcentaje >= 40) return "text-yellow-600";
     return "text-red-600";
-  };
-
-  // Función para obtener color de fondo (borde izquierdo)
+  };
   const getColorFondo = (index) => {
     const colores = [
       "border-l-4 border-blue-500",
@@ -72,7 +64,7 @@ function Estadisticas() {
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-6">
-      {/* Header */}
+      {}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
@@ -94,9 +86,9 @@ function Estadisticas() {
         </div>
       </div>
 
-      {/* Tarjetas de Resumen */}
+      {}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {/* Tareas */}
+        {}
         <div
           className={`bg-white p-6 rounded-lg shadow-md ${getColorFondo(0)}`}
         >
@@ -133,7 +125,7 @@ function Estadisticas() {
           </div>
         </div>
 
-        {/* Embarques */}
+        {}
         <div
           className={`bg-white p-6 rounded-lg shadow-md ${getColorFondo(1)}`}
         >
@@ -172,7 +164,7 @@ function Estadisticas() {
           </div>
         </div>
 
-        {/* Embarcaciones */}
+        {}
         <div
           className={`bg-white p-6 rounded-lg shadow-md ${getColorFondo(2)}`}
         >
@@ -215,7 +207,7 @@ function Estadisticas() {
           </div>
         </div>
 
-        {/* Almacenes */}
+        {}
         <div
           className={`bg-white p-6 rounded-lg shadow-md ${getColorFondo(3)}`}
         >
@@ -240,7 +232,7 @@ function Estadisticas() {
         </div>
       </div>
 
-      {/* Sección de Facturas */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -327,7 +319,7 @@ function Estadisticas() {
           </div>
         </div>
 
-        {/* Resumen General */}
+        {}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Resumen General
@@ -385,9 +377,9 @@ function Estadisticas() {
         </div>
       </div>
 
-      {/* Gráficos de Distribución */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Distribución de Tareas */}
+        {}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Distribución de Tareas
@@ -436,7 +428,7 @@ function Estadisticas() {
           </div>
         </div>
 
-        {/* Distribución de Embarcaciones */}
+        {}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Estado de Embarcaciones
@@ -494,7 +486,7 @@ function Estadisticas() {
         </div>
       </div>
 
-      {/* Botón de Actualizar */}
+      {}
       <div className="mt-8 flex justify-center">
         <button
           onClick={cargarEstadisticas}

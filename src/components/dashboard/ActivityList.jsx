@@ -7,9 +7,7 @@ import {
 const ACTIVITY_TYPES = {
   TASK: "task",
   USER: "user",
-};
-
-// Componente para ítem de actividad
+};
 const ActivityItem = ({ actividad }) => {
   const isTask = actividad.type === ACTIVITY_TYPES.TASK;
   const Icon = isTask ? DocumentTextIcon : UsersIcon;
@@ -35,9 +33,7 @@ const ActivityItem = ({ actividad }) => {
       </span>
     </div>
   );
-};
-
-// Componente para la lista de actividades
+};
 const ActivityList = ({ activities }) => {
   if (activities.length === 0) {
     return (

@@ -15,9 +15,7 @@ import {
   getEstadoTextPersonal,
   getColorEstadoPersonal,
   getColorDepartamento,
-} from "../utils/helpers";
-
-// Importar componentes
+} from "../utils/helpers";
 import PersonalStats from "../components/personal/PersonalStats";
 import PersonalFilter from "../components/personal/PersonalFilter";
 import PersonalTable from "../components/personal/PersonalTable";
@@ -29,9 +27,7 @@ function Personal() {
   const [personal, setPersonal] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentPersonal, setCurrentPersonal] = useState(null);
-  
-  // Estados de filtros y paginación
+  const [currentPersonal, setCurrentPersonal] = useState(null);
   const [filtros, setFiltros] = useState({
     departamento: "",
     estado: "",
@@ -50,7 +46,7 @@ function Personal() {
     puesto: "",
     departamento: "",
     estado: "activo",
-    rol: "usuario",
+    rol: 2,
   });
   const [stats, setStats] = useState({
     total: 0,
@@ -58,9 +54,7 @@ function Personal() {
     inactivos: 0,
     porDepartamento: []
   });
-  const [nuevosIngresosGlobal, setNuevosIngresosGlobal] = useState([]);
-
-  // Opciones predefinidas
+  const [nuevosIngresosGlobal, setNuevosIngresosGlobal] = useState([]);
   const opcionesPuestos = [
     "Coordinador de Operaciones",
     "Especialista en Aduanas",
@@ -94,17 +88,13 @@ function Personal() {
     "Calidad",
     "Almacén",
     "Transporte"
-  ];
-
-  // Cargar personal cuando cambian los filtros o la página
+  ];
   useEffect(() => {
     const timer = setTimeout(() => {
       cargarPersonal();
     }, 300);
     return () => clearTimeout(timer);
-  }, [currentPage, itemsPerPage, filtros]);
-
-  // Cargar estadísticas al montar
+  }, [currentPage, itemsPerPage, filtros]);
   useEffect(() => {
     cargarStats();
     cargarNuevosIngresos();
@@ -179,12 +169,9 @@ function Personal() {
   const handleItemsPerPageChange = (limit) => {
     setItemsPerPage(limit);
     setCurrentPage(1);
-  };
-
-  // Calcular estadísticas usando datos globales
+  };
   const calcularEstadisticas = () => {
-    const activos = stats.activos || 0;
-    // porDepartamento viene como [{_id: "Depto", count: 1}]
+    const activos = stats.activos || 0;
     const departamentos = stats.porDepartamento ? stats.porDepartamento.length : 0;
     const total = stats.total || 0;
     const promedioPorDepto =
@@ -196,9 +183,7 @@ function Personal() {
       promedioPorDepto,
       total,
     };
-  };
-
-  // Calcular variación de personal (simulada)
+  };
   const calcularVariacionPersonal = () => {
     const personalActual = personal.length;
     const personalAnterior = Math.round(personalActual * 0.9);
@@ -206,16 +191,12 @@ function Personal() {
     return Math.round(
       ((personalActual - personalAnterior) / personalAnterior) * 100
     );
-  };
-
-  // Estadísticas para mostrar
+  };
   const statsDisplay = calcularEstadisticas();
   const totalPersonalGlobal = stats.total || 0;
   const porcentajeActivos =
     totalPersonalGlobal > 0 ? Math.round((statsDisplay.activos / totalPersonalGlobal) * 100) : 0;
-  const variacionPersonal = calcularVariacionPersonal();
-
-  // Calcular estadísticas por departamento - MOSTRAR TODOS LOS DEPARTAMENTOS
+  const variacionPersonal = calcularVariacionPersonal();
   const estadisticasDepartamentos = opcionesDepartamentos.map((depto) => {
     const deptoData = stats.porDepartamento?.find(d => d._id === depto);
     return {
@@ -223,9 +204,7 @@ function Personal() {
       color: getColorDepartamento(depto),
       cantidad: deptoData ? deptoData.count : 0,
     };
-  });
-
-  // Obtener nuevos ingresos (globales)
+  });
   const nuevosIngresos = nuevosIngresosGlobal;
 
   const handleInputChange = (e) => {
@@ -246,9 +225,7 @@ function Personal() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validaciones
+    e.preventDefault();
     if (
       !formData.nombre ||
       !formData.email ||
@@ -272,6 +249,8 @@ function Personal() {
       const personalData = {
         ...formData,
         email: formData.email.toLowerCase(),
+        tipoDocumento: Number(formData.tipoDocumento),
+        rol: Number(formData.rol)
       };
 
       if (currentPersonal) {
@@ -283,9 +262,7 @@ function Personal() {
       }
 
       setModalIsOpen(false);
-      setModalIsOpen(false);
-      
-      // Actualizar todo en paralelo
+      setModalIsOpen(false);
       await Promise.all([
         cargarPersonal(),
         cargarStats(),
@@ -311,7 +288,7 @@ function Personal() {
       puesto: persona.puesto || "",
       departamento: persona.departamento || "",
       estado: persona.estado || "activo",
-      rol: persona.usuarioId?.rol || "user",
+      rol: persona.usuarioId?.rol || 2,
     });
     setModalIsOpen(true);
   };
@@ -320,9 +297,7 @@ function Personal() {
     if (window.confirm("¿Estás seguro de eliminar este empleado?")) {
       try {
         await deletePersonalRequest(id);
-        toast.success("Empleado eliminado correctamente");
-        
-        // Actualizar todo en paralelo
+        toast.success("Empleado eliminado correctamente");
         await Promise.all([
           cargarPersonal(),
           cargarStats(),
@@ -344,7 +319,7 @@ function Personal() {
       puesto: "",
       departamento: "",
       estado: "activo",
-      rol: "user",
+      rol: 2,
     });
     setCurrentPersonal(null);
   };
@@ -370,7 +345,7 @@ function Personal() {
       </div>
 
       <PersonalStats
-        total={totalItems} // Usar totalItems del backend
+        total={totalItems} 
         stats={statsDisplay}
         porcentajeActivos={porcentajeActivos}
         variacionPersonal={variacionPersonal}
@@ -385,13 +360,13 @@ function Personal() {
 
         <PersonalTable
           loading={loading}
-          personalFiltrado={personal} // Pasamos el personal directamente
+          personalFiltrado={personal} 
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           user={user}
         />
 
-        {/* Paginación */}
+        {}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -402,7 +377,7 @@ function Personal() {
         />
       </div>
 
-      {/* Paneles inferiores */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
@@ -420,9 +395,7 @@ function Personal() {
           <div className="space-y-4">
             {estadisticasDepartamentos.map((depto) => {
               const porcentaje =
-                totalPersonalGlobal > 0 ? Math.round((depto.cantidad / totalPersonalGlobal) * 100) : 0;
-
-              // Mapear colores a clases de Tailwind CSS
+                totalPersonalGlobal > 0 ? Math.round((depto.cantidad / totalPersonalGlobal) * 100) : 0;
               const colorClasses = {
                 blue: "bg-blue-500",
                 green: "bg-green-500",

@@ -9,9 +9,7 @@ import {
 } from "../api/tareas";
 import { getPersonalRequest } from "../api/personal";
 import { toast } from "react-hot-toast";
-import { getColorPrioridad, getEstadoText } from "../utils/helpers";
-
-// Importar componentes
+import { getColorPrioridad, getEstadoText } from "../utils/helpers";
 import TareasStats from "../components/tareas/TareasStats";
 import TareasFilter from "../components/tareas/TareasFilter";
 import TareasTable from "../components/tareas/TareasTable";
@@ -24,9 +22,7 @@ function Tareas() {
   const [personal, setPersonal] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentTarea, setCurrentTarea] = useState(null);
-  const [loading, setLoading] = useState(false);
-  
-  // Estados de filtros y paginación
+  const [loading, setLoading] = useState(false);
   const [filtroEstado, setFiltroEstado] = useState("");
   const [filtroPrioridad, setFiltroPrioridad] = useState("");
   const [busqueda, setBusqueda] = useState("");
@@ -52,18 +48,13 @@ function Tareas() {
     asignado: "",
     asignadoEmail: "",
     departamento: "",
-  });
-
-  // Cargar tareas cuando cambian los filtros o la página
+  });
   useEffect(() => {
     const timer = setTimeout(() => {
       cargarTareas();
-    }, 300); // Debounce para búsqueda
+    }, 300); 
     return () => clearTimeout(timer);
-  }, [currentPage, itemsPerPage, filtroEstado, filtroPrioridad, busqueda]);
-
-  // Cargar personal al montar
-  // Cargar personal y stats al montar
+  }, [currentPage, itemsPerPage, filtroEstado, filtroPrioridad, busqueda]);
   useEffect(() => {
     cargarPersonal();
     cargarStats();
@@ -82,18 +73,11 @@ function Tareas() {
   };
 
   const cargarProximasTareas = async () => {
-    try {
-      // Buscamos tareas pendientes o en progreso, ordenadas por fecha (ascendente)
-      // Nota: El backend soporta sort. Usamos limit=4.
-      // Como no podemos filtrar por OR (pendiente O en-progreso) fácilmente con los params actuales del backend
-      // (el backend espera un solo estado o usa regex para busqueda),
-      // vamos a pedir las pendientes por fecha, que son las más urgentes.
-      // Si quisiéramos ser más precisos, tendríamos que mejorar el backend para soportar múltiples estados o filtrar en cliente (pero eso rompe la paginación global si hay muchas).
-      // Para este caso, "pendiente" es lo más crítico. O podemos pedir sin filtro de estado y filtrar aquí si son pocas, pero mejor pedir pendientes.
+    try {
       const params = {
         page: 1,
         limit: 4,
-        sort: "fecha", // Asumiendo que el backend ordena por fecha string correctamente (YYYY-MM-DD o similar) o fecha date.
+        sort: "fecha", 
         estado: "pendiente"
       };
       
@@ -149,8 +133,7 @@ function Tareas() {
         res.data.success &&
         res.data.data &&
         Array.isArray(res.data.data.items)
-      ) {
-        // Filtrar solo personal activo
+      ) {
         const personalActivo = res.data.data.items.filter((p) => {
           const estado = p.estado?.toLowerCase() || "";
           return estado === "activo" || p.activo === true;
@@ -172,7 +155,7 @@ function Tareas() {
 
   const handleItemsPerPageChange = (limit) => {
     setItemsPerPage(limit);
-    setCurrentPage(1); // Volver a la primera página
+    setCurrentPage(1); 
   };
 
   const handleAsignadoChange = (e) => {
@@ -181,8 +164,8 @@ function Tareas() {
 
     setFormData({
       ...formData,
-      asignadoId: personaId, // Send ID to backend
-      asignado: personaSeleccionada ? personaSeleccionada.nombre : "", // Keep for display
+      asignadoId: personaId, 
+      asignado: personaSeleccionada ? personaSeleccionada.nombre : "", 
       departamento: personaSeleccionada ? personaSeleccionada.departamento : "",
     });
   };
@@ -206,7 +189,7 @@ function Tareas() {
     try {
       const tareaData = {
         ...formData,
-        fecha: formData.fecha, // Send YYYY-MM-DD directly
+        fecha: formData.fecha, 
       };
 
       if (currentTarea) {
@@ -217,16 +200,12 @@ function Tareas() {
         toast.success("Tarea creada correctamente");
       }
 
-      setModalIsOpen(false);
-      
-      // Actualizar todo en paralelo
+      setModalIsOpen(false);
       await Promise.all([
         cargarTareas(),
         cargarStats(),
         cargarProximasTareas()
-      ]);
-
-      // Reset form
+      ]);
       setFormData({
         titulo: "",
         descripcion: "",
@@ -245,8 +224,7 @@ function Tareas() {
   };
 
   const handleEdit = (tarea) => {
-    setCurrentTarea(tarea);
-    // Convertir fecha ISO a YYYY-MM-DD
+    setCurrentTarea(tarea);
     const fechaFormateada = tarea.fecha 
       ? new Date(tarea.fecha).toISOString().split("T")[0]
       : new Date().toISOString().split("T")[0];
@@ -267,9 +245,7 @@ function Tareas() {
     if (window.confirm("¿Estás seguro de eliminar esta tarea?")) {
       try {
         await deleteTareaRequest(id);
-        toast.success("Tarea eliminada correctamente");
-        
-        // Actualizar todo en paralelo
+        toast.success("Tarea eliminada correctamente");
         await Promise.all([
           cargarTareas(),
           cargarStats(),
@@ -295,9 +271,7 @@ function Tareas() {
       departamento: "",
     });
     setModalIsOpen(true);
-  };
-
-  // Calcular estadísticas principales usando datos globales
+  };
   const tareasPendientes = stats.pendientes;
   const tareasCompletadas = stats.completadas;
   const eficiencia =
@@ -314,9 +288,7 @@ function Tareas() {
       ? Math.round((tareasAltaPrioridad / stats.total) * 100)
       : 0;
   const eficienciaSemanaPasada = 72;
-  const diferencia = eficiencia - eficienciaSemanaPasada;
-
-  // Estadísticas por estado
+  const diferencia = eficiencia - eficienciaSemanaPasada;
   const estadisticasEstado = [
     {
       nombre: "En progreso",
@@ -335,9 +307,7 @@ function Tareas() {
     },
   ];
 
-  const totalTareasGlobal = stats.total;
-
-  // Próximas tareas (globales)
+  const totalTareasGlobal = stats.total;
   const proximasTareas = proximasTareasGlobal;
 
   return (
@@ -355,7 +325,7 @@ function Tareas() {
         )}
       </div>
 
-      {/* Estadísticas principales */}
+      {}
       <TareasStats
         tareasPendientes={tareasPendientes}
         eficiencia={eficiencia}
@@ -365,7 +335,7 @@ function Tareas() {
         porcentajeAltaPrioridad={porcentajeAltaPrioridad}
       />
 
-      {/* Tabla de tareas */}
+      {}
       <div className="bg-white rounded-lg shadow-md mb-6">
         <TareasFilter
           busqueda={busqueda}
@@ -378,13 +348,13 @@ function Tareas() {
 
         <TareasTable
           loading={loading}
-          tareasFiltradas={tareas} // Pasamos tareas directamente, ya vienen filtradas del backend
+          tareasFiltradas={tareas} 
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           user={user}
         />
 
-        {/* Paginación */}
+        {}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -395,9 +365,9 @@ function Tareas() {
         />
       </div>
 
-      {/* Paneles inferiores */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Panel de estadísticas por estado */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
@@ -439,7 +409,7 @@ function Tareas() {
           </div>
         </div>
 
-        {/* Panel de próximas tareas */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
@@ -490,7 +460,7 @@ function Tareas() {
         </div>
       </div>
 
-      {/* Modal para crear/editar tarea */}
+      {}
       <TareasForm
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}

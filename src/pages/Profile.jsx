@@ -101,7 +101,7 @@ function Profile() {
       </p>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Información del Perfil */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center mb-6">
             <div className="p-3 bg-blue-100 rounded-lg mr-4">
@@ -168,7 +168,7 @@ function Profile() {
             </div>
           </form>
 
-          {/* Información de Rol */}
+          {}
           <div className="mt-6 pt-6 border-t border-gray-200">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-700">Rol:</span>
@@ -189,7 +189,7 @@ function Profile() {
           </div>
         </div>
 
-        {/* Cambiar Contraseña */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center mb-6">
             <div className="p-3 bg-green-100 rounded-lg mr-4">
@@ -277,7 +277,7 @@ function Profile() {
             </div>
           </form>
 
-          {/* Consejos de Seguridad */}
+          {}
           <div className="mt-6 pt-6 border-t border-gray-200">
             <h3 className="text-sm font-medium text-gray-700 mb-2">
               Consejos de Seguridad

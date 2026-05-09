@@ -1,11 +1,11 @@
-// components/Footer.jsx
+
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
     <footer id="footer-container" className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {/* Logo e Información */}
+        {}
         <div className="lg:col-span-2">
           <div className="flex items-center mb-4">
             <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
@@ -32,7 +32,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Enlaces rápidos */}
+        {}
         <div>
           <h3 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-700">
             Enlaces Rápidos
@@ -86,7 +86,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Contacto y soporte */}
+        {}
         <div>
           <h3 className="text-lg font-semibold mb-4 pb-2 border-b border-gray-700">
             Soporte
@@ -134,7 +134,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Línea inferior */}
+      {}
       <div className="bg-gray-950 py-4">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">

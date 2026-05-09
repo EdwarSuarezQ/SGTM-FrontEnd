@@ -14,7 +14,7 @@ const PersonalTable = ({
 }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm">
-      {/* Vista de Tabla para Desktop */}
+      {}
       <div className="hidden md:block overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -80,7 +80,7 @@ const PersonalTable = ({
         </table>
       </div>
 
-      {/* Vista de Tarjetas para Móvil */}
+      {}
       <div className="md:hidden">
         {loading ? (
           <div className="p-8 text-center">

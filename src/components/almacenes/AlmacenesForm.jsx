@@ -19,7 +19,7 @@ const AlmacenesForm = ({
   useEffect(() => {
     const countries = Country.getAllCountries().map((country) => ({
       label: country.name,
-      value: country.name, // Guardamos el nombre del país
+      value: country.name, 
       isoCode: country.isoCode
     }));
     setPaises(countries);
@@ -82,8 +82,7 @@ const AlmacenesForm = ({
   };
 
   const handleUbicacionChange = (selectedOption) => {
-    const value = selectedOption ? selectedOption.value : "";
-    // Simular evento para handleInputChange
+    const value = selectedOption ? selectedOption.value : "";
     handleInputChange({
       target: {
         name: "ubicacion",
@@ -121,9 +120,7 @@ const AlmacenesForm = ({
     handleSubmit(e);
   };
 
-  if (!modalIsOpen) return null;
-
-  // Estilos personalizados para react-select
+  if (!modalIsOpen) return null;
   const customStyles = {
     control: (provided, state) => ({
       ...provided,

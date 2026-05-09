@@ -8,9 +8,7 @@ import {
   DocumentTextIcon,
   BuildingStorefrontIcon,
   MapIcon,
-} from "@heroicons/react/24/outline";
-
-// Componente individual para acción rápida
+} from "@heroicons/react/24/outline";
 const QuickAction = ({ title, description, icon: Icon, to, color }) => {
   const colorClasses = {
     blue: "bg-blue-50 text-blue-700 hover:bg-blue-100 border-blue-200",
@@ -40,9 +38,7 @@ const QuickAction = ({ title, description, icon: Icon, to, color }) => {
       </div>
     </Link>
   );
-};
-
-// Componente para las acciones rápidas
+};
 const QuickActions = () => {
   const { user } = useAuth();
   const userRole = user?.rol || "empleado";

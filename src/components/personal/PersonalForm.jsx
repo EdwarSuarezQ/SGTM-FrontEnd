@@ -12,17 +12,13 @@ const PersonalForm = ({
   opcionesDepartamentos,
 }) => {
   const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-
-  // Reset validation when modal closes or opens with new data
+  const [touched, setTouched] = useState({});
   useEffect(() => {
     if (!modalIsOpen) {
       setErrors({});
       setTouched({});
     }
-  }, [modalIsOpen, currentPersonal]);
-
-  // Validation rules
+  }, [modalIsOpen, currentPersonal]);
   const validateField = (name, value) => {
     switch (name) {
       case 'nombre':
@@ -86,33 +82,23 @@ const PersonalForm = ({
       default:
         return null;
     }
-  };
-
-  // Handle blur event
+  };
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
     const error = validateField(name, value);
     setErrors(prev => ({ ...prev, [name]: error }));
-  };
-
-  // Enhanced input change handler
+  };
   const handleInputChangeWithValidation = (e) => {
     handleInputChange(e);
-    const { name, value } = e.target;
-    
-    // Clear error if field was touched
+    const { name, value } = e.target;
     if (touched[name]) {
       const error = validateField(name, value);
       setErrors(prev => ({ ...prev, [name]: error }));
     }
-  };
-
-  // Validate form before submit
+  };
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    
-    // Validate all required fields
+    e.preventDefault();
     const newErrors = {};
     const fieldsToValidate = ['nombre', 'email', 'tipoDocumento', 'numeroDocumento', 'puesto', 'departamento', 'estado', 'rol'];
     
@@ -121,22 +107,16 @@ const PersonalForm = ({
       if (error) {
         newErrors[field] = error;
       }
-    });
-
-    // Mark all fields as touched
+    });
     const allTouched = {};
     fieldsToValidate.forEach(field => {
       allTouched[field] = true;
     });
-    setTouched(allTouched);
-
-    // If there are errors, don't submit
+    setTouched(allTouched);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
-    }
-
-    // Call original submit handler
+    }
     handleSubmit(e);
   };
 
@@ -199,9 +179,10 @@ const PersonalForm = ({
                 className={getFieldClassName('tipoDocumento', errors, touched, 'w-full px-3 py-2 border rounded-md')}
               >
                 <option value="">Seleccionar tipo...</option>
-                <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
-                <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
-                <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                <option value="1">Cédula de Ciudadanía</option>
+                <option value="2">Tarjeta de Identidad</option>
+                <option value="3">Cédula de Extranjería</option>
+                <option value="4">Pasaporte</option>
               </select>
               <ErrorMessage error={errors.tipoDocumento} touched={touched.tipoDocumento} />
             </div>
@@ -286,8 +267,9 @@ const PersonalForm = ({
                 onBlur={handleBlur}
                 className={getFieldClassName('rol', errors, touched, 'w-full px-3 py-2 border rounded-md')}
               >
-                <option value="user">Usuario</option>
-                <option value="admin">Administrador</option>
+                <option value="2">Empleado / Usuario</option>
+                <option value="1">Administrador</option>
+                <option value="3">Cliente</option>
               </select>
               <ErrorMessage error={errors.rol} touched={touched.rol} />
             </div>

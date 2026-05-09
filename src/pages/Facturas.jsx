@@ -13,9 +13,7 @@ import {
   formatCurrency,
   getColorEstadoFactura,
   getEstadoTextFactura,
-} from "../utils/helpers";
-
-// Importar componentes
+} from "../utils/helpers";
 import FacturasStats from "../components/facturas/FacturasStats";
 import FacturasFilter from "../components/facturas/FacturasFilter";
 import FacturasTable from "../components/facturas/FacturasTable";
@@ -28,9 +26,7 @@ function Facturas() {
   const [embarques, setEmbarques] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentFactura, setCurrentFactura] = useState(null);
-  
-  // Estados de filtros y paginación
+  const [currentFactura, setCurrentFactura] = useState(null);
   const [filtros, setFiltros] = useState({
     estado: "",
     cliente: "",
@@ -60,25 +56,19 @@ function Facturas() {
     totalPagado: 0,
     totalPendiente: 0
   });
-  const [proximosVencimientosGlobal, setProximosVencimientosGlobal] = useState([]);
-
-  // Opciones predefinidas
+  const [proximosVencimientosGlobal, setProximosVencimientosGlobal] = useState([]);
   const opcionesEstados = [
     { value: "pagada", label: "Pagada" },
     { value: "pendiente", label: "Pendiente" },
     { value: "vencida", label: "Vencida" },
     { value: "cancelada", label: "Cancelada" },
-  ];
-
-  // Cargar facturas cuando cambian los filtros o la página
+  ];
   useEffect(() => {
     const timer = setTimeout(() => {
       cargarFacturas();
     }, 300);
     return () => clearTimeout(timer);
-  }, [currentPage, itemsPerPage, filtros]);
-
-  // Cargar estadísticas al montar
+  }, [currentPage, itemsPerPage, filtros]);
   useEffect(() => {
     cargarStats();
     cargarProximosVencimientos();
@@ -96,14 +86,11 @@ function Facturas() {
   };
 
   const cargarProximosVencimientos = async () => {
-    try {
-      // Buscamos facturas pendientes, ordenadas por fecha de emisión (o vencimiento si existiera)
-      // Asumiremos orden por createdAt o fechaEmision.
-      // El backend soporta sort.
+    try {
       const params = {
         page: 1,
         limit: 4,
-        sort: "fechaEmision", // O "-createdAt"
+        sort: "fechaEmision", 
         estado: "pendiente"
       };
       
@@ -114,9 +101,7 @@ function Facturas() {
     } catch (error) {
       console.error("Error al cargar próximos vencimientos:", error);
     }
-  };
-
-  // Cargar embarques al montar
+  };
   useEffect(() => {
     cargarEmbarques();
   }, []);
@@ -158,8 +143,7 @@ function Facturas() {
   const cargarEmbarques = async () => {
     try {
       const res = await getEmbarquesRequest();
-      if (res.data?.success && Array.isArray(res.data.data?.items)) {
-        // Solo embarques que no estén cancelados
+      if (res.data?.success && Array.isArray(res.data.data?.items)) {
         const embarquesActivos = res.data.data.items.filter(
           (embarque) => embarque.estado !== "cancelado"
         );
@@ -177,9 +161,7 @@ function Facturas() {
   const handleItemsPerPageChange = (limit) => {
     setItemsPerPage(limit);
     setCurrentPage(1);
-  };
-
-  // Calcular estadísticas usando datos globales
+  };
   const calcularEstadisticas = () => {
     const facturasPendientes = stats.pendientes || 0;
     const facturasPagadas = stats.pagadas || 0;
@@ -196,9 +178,7 @@ function Facturas() {
       ingresosTotales: formatCurrency(ingresosTotales),
       facturasTotales: stats.total || 0,
     };
-  };
-
-  // Calcular variación de ingresos (simulada)
+  };
   const calcularVariacionIngresos = () => {
     const ingresosActuales = facturas
       .filter((f) => f.estado === "pagada")
@@ -210,19 +190,13 @@ function Facturas() {
     return Math.round(
       ((ingresosActuales - ingresosMesAnterior) / ingresosMesAnterior) * 100
     );
-  };
-
-  // Obtener clientes únicos para filtro (de la página actual)
+  };
   const obtenerClientesUnicos = () => {
     return [...new Set(facturas.map((f) => f.cliente).filter(Boolean))];
-  };
-
-  // Obtener próximos vencimientos
+  };
   const obtenerProximosVencimientos = () => {
     return facturas.filter((f) => f.estado === "pendiente").slice(0, 4);
-  };
-
-  // Estadísticas para mostrar
+  };
   const statsDisplay = calcularEstadisticas();
   const totalFacturasGlobal = stats.total || 0;
   const porcentajePagadas =
@@ -235,9 +209,7 @@ function Facturas() {
       : 0;
   const variacionIngresos = calcularVariacionIngresos();
   const clientesUnicos = obtenerClientesUnicos();
-  const proximosVencimientos = proximosVencimientosGlobal;
-
-  // Calcular distribución por estado (Global)
+  const proximosVencimientos = proximosVencimientosGlobal;
   const distribucionEstados = {
     pagada: stats.pagadas || 0,
     pendiente: stats.pendientes || 0,
@@ -274,9 +246,7 @@ function Facturas() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validaciones básicas
+    e.preventDefault();
     if (
       !formData.idFactura ||
       !formData.cliente ||
@@ -306,9 +276,7 @@ function Facturas() {
       }
 
       setModalIsOpen(false);
-      setModalIsOpen(false);
-      
-      // Actualizar todo en paralelo
+      setModalIsOpen(false);
       await Promise.all([
         cargarFacturas(),
         cargarStats(),
@@ -325,9 +293,7 @@ function Facturas() {
   };
 
   const handleEdit = (factura) => {
-    setCurrentFactura(factura);
-
-    // Convertir fecha ISO a YYYY-MM-DD para el input
+    setCurrentFactura(factura);
     let fechaInput = "";
     if (factura.fechaEmision) {
       fechaInput = new Date(factura.fechaEmision).toISOString().split('T')[0];
@@ -348,9 +314,7 @@ function Facturas() {
     if (window.confirm("¿Estás seguro de eliminar esta factura?")) {
       try {
         await deleteFacturaRequest(id);
-        toast.success("Factura eliminada correctamente");
-        
-        // Actualizar todo en paralelo
+        toast.success("Factura eliminada correctamente");
         await Promise.all([
           cargarFacturas(),
           cargarStats(),
@@ -412,14 +376,14 @@ function Facturas() {
 
         <FacturasTable
           loading={loading}
-          facturasFiltradas={facturas} // Pasamos las facturas directamente
+          facturasFiltradas={facturas} 
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           filtros={filtros}
           user={user}
         />
 
-        {/* Paginación */}
+        {}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -431,7 +395,7 @@ function Facturas() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Facturas por Estado */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
@@ -480,7 +444,7 @@ function Facturas() {
           </div>
         </div>
 
-        {/* Próximos Vencimientos */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">

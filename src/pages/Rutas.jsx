@@ -12,9 +12,7 @@ import {
   getColorEstadoRuta,
   getEstadoTextRuta,
   getTipoTextRuta,
-} from "../utils/helpers";
-
-// Importar componentes
+} from "../utils/helpers";
 import RutasStats from "../components/rutas/RutasStats";
 import RutasFilter from "../components/rutas/RutasFilter";
 import RutasTable from "../components/rutas/RutasTable";
@@ -26,9 +24,7 @@ function Rutas() {
   const [rutas, setRutas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentRuta, setCurrentRuta] = useState(null);
-  
-  // Estados de filtros y paginación
+  const [currentRuta, setCurrentRuta] = useState(null);
   const [filtros, setFiltros] = useState({
     tipo: "",
     estado: "",
@@ -63,9 +59,7 @@ function Rutas() {
     costeras: 0,
     totalViajes: 0
   });
-  const [proximasSalidasGlobal, setProximasSalidasGlobal] = useState([]);
-
-  // Opciones predefinidas
+  const [proximasSalidasGlobal, setProximasSalidasGlobal] = useState([]);
   const opcionesTipos = [
     { value: "internacional", label: "Internacional" },
     { value: "regional", label: "Regional" },
@@ -92,17 +86,13 @@ function Rutas() {
     "Estados Unidos",
     "España",
     "China",
-  ];
-
-  // Cargar rutas cuando cambian los filtros o la página
+  ];
   useEffect(() => {
     const timer = setTimeout(() => {
       cargarRutas();
     }, 300);
     return () => clearTimeout(timer);
-  }, [currentPage, itemsPerPage, filtros]);
-
-  // Cargar estadísticas al montar
+  }, [currentPage, itemsPerPage, filtros]);
   useEffect(() => {
     cargarStats();
     cargarProximasSalidas();
@@ -120,12 +110,7 @@ function Rutas() {
   };
 
   const cargarProximasSalidas = async () => {
-    try {
-      // Buscamos rutas activas o pendientes, ordenadas por fecha de creación o alguna fecha relevante.
-      // Como rutas no tiene fecha de salida explícita en el modelo visible (solo duracion), 
-      // usaremos sort por createdAt o idRuta para consistencia.
-      // O si hubiera un campo de próxima salida, lo usaríamos.
-      // Asumiremos orden por creación reciente por ahora.
+    try {
       const params = {
         page: 1,
         limit: 4,
@@ -183,28 +168,20 @@ function Rutas() {
   const handleItemsPerPageChange = (limit) => {
     setItemsPerPage(limit);
     setCurrentPage(1);
-  };
-
-  // Calcular estadísticas detalladas usando datos globales
+  };
   const calcularEstadisticas = () => {
     const rutasActivas = stats.activas || 0;
-    const rutasTotales = stats.total || 0;
-
-    // Distancia total y promedio vienen del backend
+    const rutasTotales = stats.total || 0;
     const distanciaTotal = stats.distanciaTotal || 0;
     const distanciaPromedio = stats.distanciaPromedio || 0;
-    const totalViajes = stats.totalViajes || 0;
-
-    // Calcular distribución por tipo
+    const totalViajes = stats.totalViajes || 0;
     const tiposDistribucion = {
       internacional: stats.internacionales || 0,
       regional: stats.regionales || 0,
       costera: stats.costeras || 0,
-    };
-
-    // Calcular variación de viajes (simulada o 0)
+    };
     const promedioViajes = rutasTotales > 0 ? totalViajes / rutasTotales : 0;
-    const variacionViajes = 0; // No tenemos histórico para variación real
+    const variacionViajes = 0; 
 
     return {
       rutasActivas,
@@ -217,9 +194,7 @@ function Rutas() {
       porcentajeActivas:
         rutasTotales > 0 ? Math.round((rutasActivas / rutasTotales) * 100) : 0,
     };
-  };
-
-  // Estadísticas para mostrar
+  };
   const statsDisplay = calcularEstadisticas();
   const proximasSalidas = proximasSalidasGlobal;
 
@@ -238,17 +213,13 @@ function Rutas() {
       [name]: value,
     }));
     setCurrentPage(1);
-  };
-
-  // Función para manejar el clic en "Ver todas"
+  };
   const handleVerTodas = () => {
     toast.success('Funcionalidad "Ver todas" en desarrollo');
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Validaciones
+    e.preventDefault();
     if (
       !formData.idRuta ||
       !formData.nombre ||
@@ -275,9 +246,7 @@ function Rutas() {
       }
 
       setModalIsOpen(false);
-      setModalIsOpen(false);
-      
-      // Actualizar todo en paralelo
+      setModalIsOpen(false);
       await Promise.all([
         cargarRutas(),
         cargarStats(),
@@ -317,9 +286,7 @@ function Rutas() {
     if (window.confirm("¿Estás seguro de eliminar esta ruta?")) {
       try {
         await deleteRutaRequest(id);
-        toast.success("Ruta eliminada correctamente");
-        
-        // Actualizar todo en paralelo
+        toast.success("Ruta eliminada correctamente");
         await Promise.all([
           cargarRutas(),
           cargarStats(),
@@ -383,13 +350,13 @@ function Rutas() {
 
         <RutasTable
           loading={loading}
-          rutasFiltradas={rutas} // Pasamos las rutas directamente
+          rutasFiltradas={rutas} 
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           user={user}
         />
 
-        {/* Paginación */}
+        {}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -401,7 +368,7 @@ function Rutas() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Estadísticas por Tipo */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
@@ -451,7 +418,7 @@ function Rutas() {
           </div>
         </div>
 
-        {/* Próximas Salidas */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">

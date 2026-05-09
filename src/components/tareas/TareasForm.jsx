@@ -15,17 +15,13 @@ const TareasForm = ({
 }) => {
   const isAdmin = user && user.rol === "admin";
   const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-
-  // Reset validation when modal closes or opens with new data
+  const [touched, setTouched] = useState({});
   useEffect(() => {
     if (!modalIsOpen) {
       setErrors({});
       setTouched({});
     }
-  }, [modalIsOpen, currentTarea]);
-
-  // Validation rules
+  }, [modalIsOpen, currentTarea]);
   const validateField = (name, value) => {
     switch (name) {
       case 'titulo':
@@ -58,33 +54,23 @@ const TareasForm = ({
       default:
         return null;
     }
-  };
-
-  // Handle blur event
+  };
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched(prev => ({ ...prev, [name]: true }));
     const error = validateField(name, value);
     setErrors(prev => ({ ...prev, [name]: error }));
-  };
-
-  // Enhanced input change handler
+  };
   const handleInputChangeWithValidation = (e) => {
     handleInputChange(e);
-    const { name, value } = e.target;
-    
-    // Clear error if field was touched
+    const { name, value } = e.target;
     if (touched[name]) {
       const error = validateField(name, value);
       setErrors(prev => ({ ...prev, [name]: error }));
     }
-  };
-
-  // Validate form before submit
+  };
   const handleFormSubmit = (e) => {
-    e.preventDefault();
-    
-    // Validate all required fields
+    e.preventDefault();
     const newErrors = {};
     const fieldsToValidate = ['titulo', 'fecha', 'prioridad', 'estado'];
     
@@ -93,22 +79,16 @@ const TareasForm = ({
       if (error) {
         newErrors[field] = error;
       }
-    });
-
-    // Mark all fields as touched
+    });
     const allTouched = {};
     fieldsToValidate.forEach(field => {
       allTouched[field] = true;
     });
-    setTouched(allTouched);
-
-    // If there are errors, don't submit
+    setTouched(allTouched);
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
-    }
-
-    // Call original submit handler
+    }
     handleSubmit(e);
   };
 
@@ -157,7 +137,7 @@ const TareasForm = ({
               ></textarea>
             </div>
             
-            {/* Select para asignar persona */}
+            {}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Asignar a</label>
               <select

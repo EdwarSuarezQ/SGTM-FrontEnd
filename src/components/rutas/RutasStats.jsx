@@ -3,7 +3,7 @@ import React from "react";
 const RutasStats = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-      {/* Tarjeta Rutas Activas */}
+      {}
       <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-purple-500">
         <div className="flex justify-between items-start">
           <div>
@@ -33,7 +33,7 @@ const RutasStats = ({ stats }) => {
         </div>
       </div>
 
-      {/* Tarjeta Distancia Promedio */}
+      {}
       <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-pink-500">
         <div className="flex justify-between items-start">
           <div>
@@ -65,7 +65,7 @@ const RutasStats = ({ stats }) => {
         </div>
       </div>
 
-      {/* Tarjeta Viajes Este Año */}
+      {}
       <div className="bg-white p-5 rounded-lg shadow-md border-l-4 border-teal-500">
         <div className="flex justify-between items-start">
           <div>

@@ -19,10 +19,8 @@ export default function MiEspacio() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
-        // Fetch tasks for current user only (myTasks=true ensures filtering even for admins)
-        const tareasRes = await getTareasRequest({ limit: 5, estado: "pendiente", myTasks: true });
-        // Fetch shipments for current user only (myShipments=true ensures filtering even for admins)
+        setLoading(true);
+        const tareasRes = await getTareasRequest({ limit: 5, estado: "pendiente", myTasks: true });
         const embarquesRes = await getEmbarquesRequest({ limit: 5, estado: "pendiente", myShipments: true });
 
         setTareas(tareasRes.data.data?.items || tareasRes.data.items || []);
@@ -62,7 +60,7 @@ export default function MiEspacio() {
         </p>
       </div>
 
-      {/* Stats Cards */}
+      {}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <div className="flex items-center">
@@ -98,7 +96,7 @@ export default function MiEspacio() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Tareas Section */}
+        {}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-lg font-semibold text-gray-900">
@@ -150,7 +148,7 @@ export default function MiEspacio() {
           </div>
         </div>
 
-        {/* Embarques Section */}
+        {}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 border-b border-gray-100 flex justify-between items-center">
             <h2 className="text-lg font-semibold text-gray-900">

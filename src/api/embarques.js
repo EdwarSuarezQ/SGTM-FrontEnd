@@ -1,4 +1,4 @@
-// src/api/embarques.js
+
 import axios from "./axios";
 
 export const getEmbarquesRequest = (params = {}) => {

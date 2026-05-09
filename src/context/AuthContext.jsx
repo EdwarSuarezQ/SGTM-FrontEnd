@@ -31,11 +31,8 @@ export function AuthProvider({ children }) {
         setLoading(false);
         setUser(null);
         return;
-      }
-
-      // Intentar verificar sesión siempre (puede haber cookie HttpOnly o cookie visible)
-      try {
-        // verifyTokenRequest manejará si envía header o confía en cookie
+      }
+      try {
         const res = await verifyTokenRequest();
         
         if (res.data && res.data.user) {
@@ -57,9 +54,7 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     try {
-      const res = await loginRequest(credentials);
-      
-      // Guardar token en localStorage
+      const res = await loginRequest(credentials);
       if (res.data && res.data.token) {
         localStorage.setItem("token", res.data.token);
         Cookies.set("token", res.data.token, { expires: 0.5, path: '/' });

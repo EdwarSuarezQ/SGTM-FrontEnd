@@ -22,8 +22,7 @@ function Login() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-    // Limpiar error cuando el usuario empiece a escribir
+    }));
     if (error) setError("");
   };
 
@@ -72,12 +71,12 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#e9f5ff] p-4">
       <div className="bg-white w-full max-w-md px-6 py-10 sm:px-10 sm:py-12 rounded-2xl shadow-lg shadow-blue-100 border border-gray-200">
-        {/* Icono */}
+        {}
         <div className="flex justify-center mb-4">
           <i className="fas fa-ship text-blue-600 text-3xl sm:text-4xl"></i>
         </div>
 
-        {/* Títulos */}
+        {}
         <h2 className="text-center text-xl sm:text-2xl font-bold text-gray-900">
           Iniciar Sesión
         </h2>
@@ -85,16 +84,16 @@ function Login() {
           Sistema de Gestión Portuaria - Buenaventura
         </p>
 
-        {/* Error */}
+        {}
         {error && (
           <p className="text-red-600 text-sm bg-red-100 p-2 rounded mb-4 text-center">
             {error}
           </p>
         )}
 
-        {/* FORM */}
+        {}
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email */}
+          {}
           <div>
             <label className="text-sm font-medium text-gray-800">Email</label>
             <input
@@ -107,7 +106,7 @@ function Login() {
             />
           </div>
 
-          {/* Password */}
+          {}
           <div>
             <label className="text-sm font-medium text-gray-800">
               Contraseña
@@ -122,7 +121,7 @@ function Login() {
                 autoComplete="current-password"
               />
 
-              {/* Botón ojo */}
+              {}
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
@@ -138,7 +137,7 @@ function Login() {
             </div>
           </div>
 
-          {/* Botón */}
+          {}
           <button
             type="submit"
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium"
@@ -146,8 +145,8 @@ function Login() {
             Iniciar Sesión
           </button>
 
-          {/* Enlace */}
-          {/* Enlace de registro eliminado - Solo admin crea usuarios */}
+          {}
+          {}
         </form>
       </div>
     </div>

@@ -1,4 +1,4 @@
-// src/api/facturas.js
+
 import axios from "./axios";
 
 export const getFacturasRequest = (params = {}) => {

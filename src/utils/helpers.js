@@ -1,4 +1,4 @@
-// Función para obtener iniciales
+
 export const getIniciales = (nombre) => {
   if (!nombre) return "??";
   return nombre
@@ -6,9 +6,7 @@ export const getIniciales = (nombre) => {
     .map((n) => n[0])
     .join("")
     .toUpperCase();
-};
-
-// Función para obtener color de iniciales
+};
 export const getColorIniciales = (nombre) => {
   const colores = [
     "bg-blue-500",
@@ -19,18 +17,16 @@ export const getColorIniciales = (nombre) => {
   ];
   const index = nombre?.charCodeAt(0) % colores.length || 0;
   return colores[index];
-};
-
-// Función para calcular días restantes
+};
 export const calcularDiasRestantes = (fecha) => {
   if (!fecha) return "Sin fecha";
 
   try {
     const hoy = new Date();
-    hoy.setHours(0, 0, 0, 0); // Reset time to start of day
+    hoy.setHours(0, 0, 0, 0); 
     
     const fechaLimite = new Date(fecha);
-    fechaLimite.setHours(0, 0, 0, 0); // Reset time to start of day
+    fechaLimite.setHours(0, 0, 0, 0); 
     
     const diffTime = fechaLimite - hoy;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -43,9 +39,7 @@ export const calcularDiasRestantes = (fecha) => {
   } catch (error) {
     return "Fecha inválida";
   }
-};
-
-// Función para obtener color de prioridad
+};
 export const getColorPrioridad = (prioridad) => {
   const colores = {
     alta: "bg-red-500",
@@ -53,9 +47,7 @@ export const getColorPrioridad = (prioridad) => {
     baja: "bg-green-500",
   };
   return colores[prioridad] || "bg-gray-500";
-};
-
-// Función para obtener texto de estado
+};
 export const getEstadoText = (estado) => {
   const estados = {
     pendiente: "Pendiente",
@@ -63,11 +55,7 @@ export const getEstadoText = (estado) => {
     completada: "Completada",
   };
   return estados[estado] || estado;
-};
-
-
-
-// Función para obtener color de estado (Embarcaciones)
+};
 export const getColorEstado = (estado) => {
   const colores = {
     pendiente: "bg-gray-100 text-gray-800 border-gray-200",
@@ -76,9 +64,7 @@ export const getColorEstado = (estado) => {
     "en-puerto": "bg-yellow-100 text-yellow-800 border-yellow-200",
   };
   return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
-};
-
-// Función para obtener texto de estado (Embarcaciones)
+};
 export const getTextoEstado = (estado) => {
   const estados = {
     pendiente: "Pendiente",
@@ -87,9 +73,7 @@ export const getTextoEstado = (estado) => {
     "en-puerto": "En puerto",
   };
   return estados[estado] || estado;
-};
-
-// Función para obtener info del badge de tipo
+};
 export const getBadgeInfo = (tipo) => {
   const badges = {
     contenedor: {
@@ -121,11 +105,7 @@ export const getBadgeInfo = (tipo) => {
       nombre: "Desconocido",
     }
   );
-};
-
-// --- Helpers para Rutas ---
-
-// Función para obtener color de estado (Rutas)
+};
 export const getColorEstadoRuta = (estado) => {
   const colores = {
     activa: "bg-green-100 text-green-800 border-green-200",
@@ -134,9 +114,7 @@ export const getColorEstadoRuta = (estado) => {
     inactiva: "bg-red-100 text-red-800 border-red-200",
   };
   return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
-};
-
-// Función para obtener texto de estado (Rutas)
+};
 export const getEstadoTextRuta = (estado) => {
   const map = {
     activa: "Activa",
@@ -145,9 +123,7 @@ export const getEstadoTextRuta = (estado) => {
     inactiva: "Inactiva",
   };
   return map[estado] || estado;
-};
-
-// Función para obtener texto de tipo (Rutas)
+};
 export const getTipoTextRuta = (tipo) => {
   const map = {
     internacional: "Internacional",
@@ -155,9 +131,7 @@ export const getTipoTextRuta = (tipo) => {
     costera: "Costera",
   };
   return map[tipo] || tipo;
-};
-
-// Función para obtener color de tipo (Rutas)
+};
 export const getColorTipoRuta = (tipo) => {
   const colores = {
     internacional: "bg-purple-100 text-purple-800 border-purple-200",
@@ -165,11 +139,7 @@ export const getColorTipoRuta = (tipo) => {
     costera: "bg-teal-100 text-teal-800 border-teal-200",
   };
   return colores[tipo] || "bg-gray-100 text-gray-800 border-gray-200";
-};
-
-// --- Helpers para Embarques ---
-
-// Función para obtener color de estado (Embarques)
+};
 export const getColorEstadoEmbarque = (estado) => {
   const colores = {
     pendiente: "bg-gray-100 text-gray-800 border-gray-200",
@@ -181,9 +151,7 @@ export const getColorEstadoEmbarque = (estado) => {
     completado: "bg-green-100 text-green-800 border-green-200",
   };
   return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
-};
-
-// Función para obtener texto de estado (Embarques)
+};
 export const getTextoEstadoEmbarque = (estado) => {
   const estados = {
     pendiente: "Pendiente",
@@ -195,9 +163,7 @@ export const getTextoEstadoEmbarque = (estado) => {
     completado: "Completado",
   };
   return estados[estado] || estado;
-};
-
-// Función para obtener badge de tipo de carga
+};
 export const getBadgeTipoCarga = (tipo) => {
   const badges = {
     seco: {
@@ -233,11 +199,7 @@ export const getBadgeTipoCarga = (tipo) => {
       texto: tipo,
     }
   );
-};
-
-// --- Helpers para Facturas ---
-
-// Función para obtener color de estado (Facturas)
+};
 export const getColorEstadoFactura = (estado) => {
   const colores = {
     pagada: "bg-green-100 text-green-800 border-green-200",
@@ -246,9 +208,7 @@ export const getColorEstadoFactura = (estado) => {
     cancelada: "bg-gray-100 text-gray-800 border-gray-200",
   };
   return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
-};
-
-// Función para obtener texto de estado (Facturas)
+};
 export const getEstadoTextFactura = (estado) => {
   const map = {
     pagada: "Pagada",
@@ -257,48 +217,34 @@ export const getEstadoTextFactura = (estado) => {
     cancelada: "Cancelada",
   };
   return map[estado] || estado;
-};
-
-// Formatear moneda
+};
 export const formatCurrency = (amount) => {
   return new Intl.NumberFormat("es-CO", {
     style: "currency",
     currency: "COP",
     minimumFractionDigits: 0,
   }).format(amount);
-};
-
-// --- Helpers para Personal ---
-
-// Función para formatear fecha
+};
 export const formatDate = (dateString) => {
   if (!dateString) return "N/A";
   const options = { year: "numeric", month: "long", day: "numeric" };
   return new Date(dateString).toLocaleDateString("es-ES", options);
-};
-
-// Función para validar email
+};
 export const validarEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
-};
-
-// Función para obtener texto de estado (Personal)
+};
 export const getEstadoTextPersonal = (estado) => {
   const map = { activo: "Activo", inactivo: "Inactivo" };
   return map[estado] || estado;
-};
-
-// Función para obtener color de estado (Personal)
+};
 export const getColorEstadoPersonal = (estado) => {
   const colores = {
     activo: "bg-green-100 text-green-800 border-green-200",
     inactivo: "bg-red-100 text-red-800 border-red-200",
   };
   return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
-};
-
-// Función para obtener color de departamento
+};
 export const getColorDepartamento = (depto) => {
   const colores = {
     Logística: "blue",
@@ -313,11 +259,7 @@ export const getColorDepartamento = (depto) => {
     Calidad: "orange",
   };
   return colores[depto] || "gray";
-};
-
-// --- Helpers para Almacenes ---
-
-// Función para obtener color de estado (Almacenes)
+};
 export const getColorEstadoAlmacen = (estado) => {
   const colores = {
     operativo: "bg-green-100 text-green-800 border-green-200",
@@ -325,9 +267,7 @@ export const getColorEstadoAlmacen = (estado) => {
     inoperativo: "bg-red-100 text-red-800 border-red-200",
   };
   return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
-};
-
-// Función para obtener texto de estado (Almacenes)
+};
 export const getTextoEstadoAlmacen = (estado) => {
   const estados = {
     operativo: "Operativo",
@@ -335,9 +275,7 @@ export const getTextoEstadoAlmacen = (estado) => {
     inoperativo: "Inoperativo",
   };
   return estados[estado] || estado;
-};
-
-// Función para obtener el color de la barra de ocupación
+};
 export const getColorOcupacion = (ocupacion) => {
   if (ocupacion >= 90) return "bg-red-500";
   if (ocupacion >= 75) return "bg-yellow-500";

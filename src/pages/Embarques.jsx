@@ -16,37 +16,27 @@ import {
   formatDate,
   getColorEstadoEmbarque,
   getTextoEstadoEmbarque,
-} from "../utils/helpers";
-
-// Importar componentes
+} from "../utils/helpers";
 import EmbarquesStats from "../components/embarques/EmbarquesStats";
 import EmbarquesFilter from "../components/embarques/EmbarquesFilter";
 import EmbarquesTable from "../components/embarques/EmbarquesTable";
 import EmbarquesForm from "../components/embarques/EmbarquesForm";
-import Pagination from "../components/Pagination";
-
-// Función para calcular entregas a tiempo
+import Pagination from "../components/Pagination";
 const calcularEntregasATiempo = (embarques) => {
   const entregados = embarques.filter((e) => e.estado === "entregado").length;
   const total = embarques.length;
   return total > 0 ? Math.round((entregados / total) * 100) : 0;
-};
-
-// Función para calcular peso total
+};
 const calcularPesoTotal = (embarques) => {
   return embarques.reduce((total, e) => total + (e.peso || 0), 0);
-};
-
-// Función para calcular variación de peso
+};
 const calcularVariacionPeso = (embarques) => {
   const pesoTotal = calcularPesoTotal(embarques);
   const promedioPeso = embarques.length > 0 ? pesoTotal / embarques.length : 0;
 
   if (promedioPeso === 0) return 0;
   return Math.round(((pesoTotal - promedioPeso) / promedioPeso) * 100);
-};
-
-// Función para calcular embarques en retraso
+};
 const calcularEmbarquesRetraso = (embarques) => {
   const hoy = new Date();
   return embarques.filter((embarque) => {
@@ -57,9 +47,7 @@ const calcularEmbarquesRetraso = (embarques) => {
     const fechaEstimada = new Date(embarque.fechaEstimada);
     return fechaEstimada < hoy;
   }).length;
-};
-
-// Función para obtener próximos embarques
+};
 const obtenerProximosEmbarques = (embarques, limite = 4) => {
   const hoy = new Date();
   return embarques
@@ -73,9 +61,7 @@ const obtenerProximosEmbarques = (embarques, limite = 4) => {
     })
     .sort((a, b) => new Date(a.fechaEstimada) - new Date(b.fechaEstimada))
     .slice(0, limite);
-};
-
-// Componente para la barra de progreso
+};
 const BarraProgreso = ({ porcentaje, color }) => (
   <div className="w-full bg-gray-200 rounded-full h-2">
     <div
@@ -94,9 +80,7 @@ function Embarques() {
   const [personal, setPersonal] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [currentEmbarque, setCurrentEmbarque] = useState(null);
-  
-  // Estados de filtros y paginación
+  const [currentEmbarque, setCurrentEmbarque] = useState(null);
   const [filtros, setFiltros] = useState({
     estado: "",
     search: "",
@@ -133,17 +117,13 @@ function Embarques() {
     volumen: "",
     valorDeclarado: "",
     observaciones: "",
-  });
-
-  // Cargar embarques cuando cambian los filtros o la página
+  });
   useEffect(() => {
     const timer = setTimeout(() => {
       cargarEmbarques();
     }, 300);
     return () => clearTimeout(timer);
-  }, [currentPage, itemsPerPage, filtros]);
-
-  // Cargar datos auxiliares al montar
+  }, [currentPage, itemsPerPage, filtros]);
   useEffect(() => {
     cargarEmbarcaciones();
     cargarRutas();
@@ -165,11 +145,7 @@ function Embarques() {
   };
 
   const cargarProximosEmbarques = async () => {
-    try {
-      // Buscamos embarques en tránsito o pendientes, ordenados por fecha estimada (ascendente)
-      // Usamos estado "en-transito" como prioridad, o podríamos no filtrar por estado y ordenar por fecha estimada >= hoy
-      // El backend actual filtra por estado exacto.
-      // Vamos a pedir los "en-transito" ordenados por fecha estimada.
+    try {
       const params = {
         page: 1,
         limit: 4,
@@ -244,8 +220,7 @@ function Embarques() {
   const cargarAlmacenes = async () => {
     try {
       const res = await getAlmacenesRequest();
-      if (res.data?.success && Array.isArray(res.data.data?.items)) {
-        // Filtrar solo almacenes operativos
+      if (res.data?.success && Array.isArray(res.data.data?.items)) {
         const almacenesOperativos = res.data.data.items.filter(
           (almacen) => almacen.estado === "operativo"
         );
@@ -259,8 +234,7 @@ function Embarques() {
   const cargarPersonal = async () => {
     try {
       const res = await getPersonalRequest({ limit: 100 });
-      if (res.data?.success && Array.isArray(res.data.data?.items)) {
-        // Filtrar solo personal activo
+      if (res.data?.success && Array.isArray(res.data.data?.items)) {
         const personalActivo = res.data.data.items.filter(
           (p) => p.estado === "activo"
         );
@@ -278,10 +252,7 @@ function Embarques() {
   const handleItemsPerPageChange = (limit) => {
     setItemsPerPage(limit);
     setCurrentPage(1);
-  };
-
-  // Calcular estadísticas (basadas en la página actual por ahora)
-  // Calcular estadísticas usando datos globales
+  };
   const embarquesActivos = (stats.enTransito || 0) + (stats.enAduana || 0) + (stats.pendientes || 0);
 
   const entregasATiempo = stats.total > 0 ? Math.round((stats.entregados / stats.total) * 100) : 0;
@@ -290,22 +261,13 @@ function Embarques() {
   const porcentajeActivos =
     totalEmbarquesGlobal > 0
       ? Math.round((embarquesActivos / totalEmbarquesGlobal) * 100)
-      : 0;
-  
-  // Replicar lógica de variación de peso
+      : 0;
   const variacionPeso = stats.avgPeso > 0 
     ? Math.round(((stats.totalPeso - stats.avgPeso) / stats.avgPeso) * 100) 
-    : 0;
-
-  // Nota: embarquesRetraso requiere filtrado por fecha que no está en stats agregados aún,
-  // por ahora usamos 0 o lo que venga del backend si lo implementamos.
-  // Para mantener consistencia visual, podemos dejarlo en 0 o calcularlo solo de la página actual (pero eso sería inconsistente).
-  // Vamos a dejarlo como estaba (página actual) solo para este dato específico o 0.
+    : 0;
   const embarquesRetraso = calcularEmbarquesRetraso(embarques); 
   
-  const proximosEmbarques = proximosEmbarquesGlobal;
-
-  // Calcular estadísticas por estado
+  const proximosEmbarques = proximosEmbarquesGlobal;
   const estadisticasPorEstado = [
     {
       nombre: "En tránsito",
@@ -355,7 +317,7 @@ function Embarques() {
       ...prev,
       [name]: value,
     }));
-    setCurrentPage(1); // Resetear a página 1 al filtrar
+    setCurrentPage(1); 
   };
 
   const validateForm = () => {
@@ -373,9 +335,7 @@ function Embarques() {
         `Los siguientes campos son obligatorios: ${missingFields.join(", ")}`
       );
       return false;
-    }
-
-    // Validar formato de fechas
+    }
     if (
       formData.fechaSalida &&
       isNaN(new Date(formData.fechaSalida).getTime())
@@ -390,9 +350,7 @@ function Embarques() {
     ) {
       toast.error("La fecha estimada no es válida");
       return false;
-    }
-
-    // Validar que la fecha estimada sea posterior a la fecha de salida si ambas existen
+    }
     if (formData.fechaSalida && formData.fechaEstimada) {
       const fechaSalida = new Date(formData.fechaSalida);
       const fechaEstimada = new Date(formData.fechaEstimada);
@@ -415,12 +373,9 @@ function Embarques() {
       return;
     }
 
-    try {
-      // MAPEAR "completado" a "entregado" para el backend
+    try {
       const estadoParaBackend =
-        formData.estado === "completado" ? "entregado" : formData.estado;
-
-      // Preparar los datos para enviar
+        formData.estado === "completado" ? "entregado" : formData.estado;
       const embarqueData = {
         numeroGuia: formData.numeroGuia?.trim(),
         cliente: formData.cliente?.trim(),
@@ -441,9 +396,7 @@ function Embarques() {
           ? Number(formData.valorDeclarado)
           : undefined,
         observaciones: formData.observaciones?.trim() || undefined,
-      };
-
-      // Limpiar campos undefined
+      };
       Object.keys(embarqueData).forEach((key) => {
         if (embarqueData[key] === undefined || embarqueData[key] === "") {
           delete embarqueData[key];
@@ -459,9 +412,7 @@ function Embarques() {
       }
 
       setModalIsOpen(false);
-      setModalIsOpen(false);
-      
-      // Actualizar todo en paralelo
+      setModalIsOpen(false);
       await Promise.all([
         cargarEmbarques(),
         cargarStats(),
@@ -492,9 +443,7 @@ function Embarques() {
   };
 
   const handleEdit = (embarque) => {
-    setCurrentEmbarque(embarque);
-
-    // Convertir fechas de Date a string para el input (YYYY-MM-DD)
+    setCurrentEmbarque(embarque);
     const formatDateForInput = (date) => {
       if (!date) return "";
       try {
@@ -535,9 +484,7 @@ function Embarques() {
     if (window.confirm("¿Estás seguro de eliminar este embarque?")) {
       try {
         await deleteEmbarqueRequest(id);
-        toast.success("Embarque eliminado correctamente");
-        
-        // Actualizar todo en paralelo
+        toast.success("Embarque eliminado correctamente");
         await Promise.all([
           cargarEmbarques(),
           cargarStats(),
@@ -607,13 +554,13 @@ function Embarques() {
 
         <EmbarquesTable
           loading={loading}
-          embarquesFiltrados={embarques} // Pasamos los embarques directamente
+          embarquesFiltrados={embarques} 
           handleEdit={handleEdit}
           handleDelete={handleDelete}
           user={user}
         />
 
-        {/* Paginación */}
+        {}
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -625,7 +572,7 @@ function Embarques() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Panel: Embarques por Estado */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
@@ -664,7 +611,7 @@ function Embarques() {
           </div>
         </div>
 
-        {/* Panel: Próximas Llegadas */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">

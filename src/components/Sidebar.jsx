@@ -1,4 +1,4 @@
-// components/Sidebar.jsx
+
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -47,20 +47,16 @@ const navigationSections = [
       { name: 'Exportar Datos', href: '/exportar-datos', icon: ArrowDownTrayIcon, allowedRoles: ['admin'] }
     ]
   }
-];
-
-// Helper para filtrar items por rol
+];
 const filterItemsByRole = (items, userRole) => {
   return items.filter(item => {
-    if (!item.allowedRoles) return true; // Si no tiene roles definidos, mostrar a todos
+    if (!item.allowedRoles) return true; 
     return item.allowedRoles.includes(userRole);
   });
-};
-
-// Sidebar para desktop (se puede plegar)
+};
 function DesktopSidebar({ isCollapsed }) {
   const { user } = useAuth();
-  const userRole = user?.rol || 'empleado'; // Default a empleado si no hay rol
+  const userRole = user?.rol || 'empleado'; 
 
   return (
     <aside className={`hidden lg:block bg-gray-800 text-white sticky top-16 transition-all duration-300 ${
@@ -74,7 +70,7 @@ function DesktopSidebar({ isCollapsed }) {
 
           return (
             <div key={section.title} className="mb-6">
-              {/* Títulos de sección - se ocultan cuando está colapsado */}
+              {}
               {!isCollapsed && (
                 <div className="px-3 mb-2">
                   <h2 className="text-xs uppercase tracking-wide text-gray-400">
@@ -109,16 +105,14 @@ function DesktopSidebar({ isCollapsed }) {
       </nav>
     </aside>
   );
-}
-
-// Sidebar para móvil (se abre/cierra con el menú hamburguesa)
+}
 function MobileSidebar({ isOpen, onClose }) {
   const { user } = useAuth();
   const userRole = user?.rol || 'empleado';
 
   return (
     <>
-      {/* Overlay para móvil - se muestra cuando el sidebar está abierto */}
+      {}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-gray-600 bg-opacity-75 z-40 lg:hidden"
@@ -126,7 +120,7 @@ function MobileSidebar({ isOpen, onClose }) {
         />
       )}
       
-      {/* Sidebar móvil */}
+      {}
       <div className={`lg:hidden ${isOpen ? 'block' : 'hidden'}`}>
         <aside className="fixed inset-y-0 left-0 z-40 w-64 bg-gray-800 text-white transform transition-transform duration-300 ease-in-out mt-16">
           <nav className="px-1 pt-4">
@@ -168,9 +162,7 @@ function MobileSidebar({ isOpen, onClose }) {
       </div>
     </>
   );
-}
-
-// Componente principal Sidebar
+}
 export default function Sidebar({ isOpen, onClose, isCollapsed }) {
   return (
     <>

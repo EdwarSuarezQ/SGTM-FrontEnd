@@ -1,4 +1,4 @@
-// components/Navbar.jsx
+
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { Link } from 'react-router-dom';
@@ -18,7 +18,7 @@ export default function Navbar({ onToggleSidebar, onToggleCollapse }) {
   return (
     <header className="bg-blue-800 text-white shadow-md flex items-center justify-between px-4 py-4 fixed top-0 left-0 right-0 z-50 h-16">
       <div className="flex items-center">
-        {/* Botón menú hamburguesa para móvil */}
+        {}
         <button 
           onClick={onToggleSidebar}
           className="text-white focus:outline-none lg:hidden"
@@ -26,7 +26,7 @@ export default function Navbar({ onToggleSidebar, onToggleCollapse }) {
           <i className="fas fa-bars w-5 h-5"></i>
         </button>
 
-        {/* Botón para plegar/desplegar sidebar en desktop */}
+        {}
         <button 
           onClick={onToggleCollapse}
           className="text-white focus:outline-none hidden lg:block ml-2"
@@ -38,17 +38,17 @@ export default function Navbar({ onToggleSidebar, onToggleCollapse }) {
       <div className="flex-1 flex items-center justify-between ml-4">
         <h1 className="text-lg sm:text-xl font-bold flex items-center truncate">
           <i className="fas fa-ship w-5 h-5 sm:w-6 sm:h-6 mr-2 flex-shrink-0"></i>
-          <span className="truncate">SGTM {/* Buenaventura oculto en móviles muy pequeños si es necesario, pero truncate ayuda */}</span>
+          <span className="truncate">SGTM {}</span>
           <span className="hidden sm:inline ml-1 text-blue-200">Buenaventura</span>
         </h1>
 
         <div className="flex items-center space-x-4">
-          {/* Notifications */}
+          {}
           <button className="text-white focus:outline-none relative">
             <i className="fas fa-bell w-5 h-5"></i>
           </button>
 
-          {/* Profile Dropdown */}
+          {}
           <Menu as="div" className="relative">
             <div>
               <Menu.Button 

@@ -14,9 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { getPersonalRequest, getPersonalStatsRequest } from "../api/personal";
 import { getTareasRequest, getTareasStatsRequest } from "../api/tareas";
-import { getAlmacenesStatsRequest } from "../api/almacenes";
-
-// Importar componentes
+import { getAlmacenesStatsRequest } from "../api/almacenes";
 import StatCard from "../components/dashboard/StatCard";
 import ActivityList from "../components/dashboard/ActivityList";
 import QuickActions from "../components/dashboard/QuickActions";
@@ -24,9 +22,7 @@ import QuickActions from "../components/dashboard/QuickActions";
 const ACTIVITY_TYPES = {
   TASK: "task",
   USER: "user",
-};
-
-// Hook personalizado para manejar los datos del dashboard
+};
 const useDashboardData = () => {
   const { user } = useAuth();
   const [stats, setStats] = useState({
@@ -39,9 +35,7 @@ const useDashboardData = () => {
     actividadesRecientes: [],
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Función optimizada para extraer datos de la respuesta API (para listas)
+  const [error, setError] = useState(null);
   const extractData = useCallback((response) => {
     if (!response?.data) return [];
     const { data } = response;
@@ -51,9 +45,7 @@ const useDashboardData = () => {
     if (data.items && Array.isArray(data.items)) return data.items;
     if (Array.isArray(response)) return response;
     return [];
-  }, []);
-
-  // Función para obtener fecha válida de un objeto
+  }, []);
   const getValidDate = (obj) => {
     const dateKeys = [
       "fechaActualizacion",
@@ -71,9 +63,7 @@ const useDashboardData = () => {
       }
     }
     return new Date();
-  };
-
-  // Función para crear actividades del personal
+  };
   const createPersonalActivities = (personal) => {
     return personal.map((p) => ({
       id: p._id || p.id || `personal-${Math.random().toString(36).substr(2, 9)}`,
@@ -86,9 +76,7 @@ const useDashboardData = () => {
       }),
       timestamp: getValidDate(p).getTime(),
     }));
-  };
-
-  // Función para crear actividades de tareas
+  };
   const createTaskActivities = (tareas) => {
     return tareas.map((t) => {
       const estado = t.estado || t.status || "";
@@ -106,62 +94,37 @@ const useDashboardData = () => {
         timestamp: getValidDate(t).getTime(),
       };
     });
-  };
-
-  // Cargar datos reales de la API
+  };
   const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
-      setError(null);
-
-
-
-      // Definir promesas base vacías para evitar errores si no se tiene permiso
+      setError(null);
       const emptyStats = { data: { data: {} } };
       const emptyList = { data: [] };
 
-      const { rol: userRole } = user || { rol: "empleado" };
-
-      // Ejecutar peticiones según el rol
+      const { rol: userRole } = user || { rol: "empleado" };
       const [
         personalStatsRes,
         tareasStatsRes,
         almacenesStatsRes,
         personalRecentRes,
         tareasRecentRes
-      ] = await Promise.all([
-        // Personal Stats: Solo Admin
-        userRole === "admin" ? getPersonalStatsRequest() : Promise.resolve(emptyStats),
-        
-        // Tareas Stats: Admin y Empleado
-        ["admin", "empleado"].includes(userRole) ? getTareasStatsRequest() : Promise.resolve(emptyStats),
-        
-        // Almacenes Stats: Admin y Empleado
-        ["admin", "empleado"].includes(userRole) ? getAlmacenesStatsRequest() : Promise.resolve(emptyStats),
-        
-        // Personal Reciente: Solo Admin
-        userRole === "admin" ? getPersonalRequest({ limit: 5, sort: "-createdAt" }) : Promise.resolve(emptyList),
-        
-        // Tareas Recientes: Admin y Empleado
+      ] = await Promise.all([
+        userRole === "admin" ? getPersonalStatsRequest() : Promise.resolve(emptyStats),
+        ["admin", "empleado"].includes(userRole) ? getTareasStatsRequest() : Promise.resolve(emptyStats),
+        ["admin", "empleado"].includes(userRole) ? getAlmacenesStatsRequest() : Promise.resolve(emptyStats),
+        userRole === "admin" ? getPersonalRequest({ limit: 5, sort: "-createdAt" }) : Promise.resolve(emptyList),
         ["admin", "empleado"].includes(userRole) ? getTareasRequest({ limit: 5, sort: "-createdAt" }) : Promise.resolve(emptyList)
-      ]);
-
-      // Procesar Estadísticas de Personal
+      ]);
       const pStats = personalStatsRes.data?.data || {};
       const totalPersonal = pStats.total || 0;
-      const personalActivo = pStats.activos || 0;
-
-      // Procesar Estadísticas de Tareas
+      const personalActivo = pStats.activos || 0;
       const tStats = tareasStatsRes.data?.data || {};
       const tareasPendientes = tStats.pendientes || 0;
-      const tareasCompletadas = tStats.completadas || 0;
-
-      // Procesar Estadísticas de Almacenes
+      const tareasCompletadas = tStats.completadas || 0;
       const aStats = almacenesStatsRes.data?.data || {};
       const totalAlmacenes = aStats.total || 0;
-      const almacenesOperativos = aStats.operativos || 0;
-
-      // Procesar Actividad Reciente
+      const almacenesOperativos = aStats.operativos || 0;
       const recentPersonal = extractData(personalRecentRes) || [];
       const recentTareas = extractData(tareasRecentRes) || [];
 
@@ -205,9 +168,7 @@ const useDashboardData = () => {
   return { stats, loading, error, refetch: fetchDashboardData };
 };
 
-import Loader from "../components/common/Loader";
-
-// Componente de Loading mejorado
+import Loader from "../components/common/Loader";
 const LoadingSpinner = () => (
   <div className="max-w-7xl mx-auto px-6 py-6">
     <div className="flex flex-col justify-center items-center h-64 space-y-4">
@@ -220,9 +181,7 @@ const LoadingSpinner = () => (
       </div>
     </div>
   </div>
-);
-
-// Componente de Error mejorado
+);
 const ErrorDisplay = ({ error, onRetry }) => (
   <div className="max-w-7xl mx-auto px-6 py-6">
     <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-r-lg">
@@ -258,9 +217,7 @@ const Dashboard = () => {
       <DashboardContent stats={stats} user={user} onRefresh={refetch} />
     </div>
   );
-};
-
-// Componente separado para el contenido del dashboard
+};
 const DashboardContent = ({ stats, user, onRefresh }) => {
   const porcentajeActivos =
     stats.totalPersonal > 0
@@ -269,7 +226,7 @@ const DashboardContent = ({ stats, user, onRefresh }) => {
 
   return (
     <div className="space-y-6">
-      {/* Header mejorado */}
+      {}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="flex-1">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -291,7 +248,7 @@ const DashboardContent = ({ stats, user, onRefresh }) => {
         </button>
       </div>
 
-      {/* Grid de estadísticas mejorado */}
+      {}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
         {user?.rol === "admin" && (
           <>
@@ -342,9 +299,9 @@ const DashboardContent = ({ stats, user, onRefresh }) => {
         )}
       </div>
 
-      {/* Contenido principal en grid */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Actividad Reciente */}
+        {}
         <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-md p-5 h-full">
             <div className="flex items-center justify-between mb-4">
@@ -362,7 +319,7 @@ const DashboardContent = ({ stats, user, onRefresh }) => {
           </div>
         </div>
 
-        {/* Acciones Rápidas */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-5 h-full">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">
